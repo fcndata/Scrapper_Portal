@@ -40,8 +40,8 @@ def append_scraped_urls(urls):
 
 def get_urls():
     final_url = [
-       # "https://www.portalinmobiliario.com/venta/departamento/las-condes-metropolitana/_OrderId_BEGINS*DESC",
-       # "https://www.portalinmobiliario.com/venta/departamento/vitacura-metropolitana/_OrderId_BEGINS*DESC",
+        "https://www.portalinmobiliario.com/venta/departamento/las-condes-metropolitana/_OrderId_BEGINS*DESC",
+        "https://www.portalinmobiliario.com/venta/departamento/vitacura-metropolitana/_OrderId_BEGINS*DESC",
         "https://www.portalinmobiliario.com/venta/departamento/providencia-metropolitana/_OrderId_BEGINS*DESC"
     ]
     all_hrefs = set()
@@ -208,7 +208,6 @@ def get_article(url):
     header_obtained = False
     content_obtained = False
     location_obtained = False
-
     attempt = 0
     while attempt < max_attempts:
         try:
