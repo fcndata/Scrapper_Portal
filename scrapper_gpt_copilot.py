@@ -7,9 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1ciHcgGpz0dKNZ_wk0kyZNvdFeJYnBSfN
 """
 
-from google.colab import drive
-drive.mount('/content/drive')
-
 import requests
 import csv
 
@@ -19,7 +16,7 @@ from datetime import datetime
 from time import sleep,time
 from random import choice
 
-file_path = Path("/content/drive/My Drive/Scrapper_GPT/scraped_urls_copilot.txt")
+file_path = Path("data/scraped_urls_copilot.txt")
 
 def get_scraped_urls():
     scraped_urls = []
@@ -263,7 +260,7 @@ def get_article(url):
 get_article("https://www.portalinmobiliario.com/MLC-2398365192-oportunidad-providencia-departamento-e-yanez-_JM#position=15&search_layout=grid&type=item&tracking_id=daf8047a-24d9-42d9-aba3-8d0a1cc368c9")
 
 def get_local_path(processed_article):
-    base_path = Path("/content/drive/My Drive/Scrapper_GPT")
+    base_path = Path("Scrapper_Portal/data")
     pub_date = datetime.fromisoformat(processed_article["Fecha_Publicacion"])
     year_folder = pub_date.strftime("%Y")
     file_name = f"{pub_date.strftime('%Y%m')}.csv"
