@@ -1,5 +1,4 @@
 -i https://pypi.org/simple
-google-colab==1.0.0
 requests==2.26.0
 beautifulsoup4==4.10.0
 kaggle==1.5.12
