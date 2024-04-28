@@ -2,7 +2,7 @@ name: Daily Workflow
 
 on:
   schedule:
-    - cron:"*/45 * * * *# Ejecutar todos los días a las 02:00 AM UTC "*/15 * * * *" '0 2 * * *'
+    - cron:"*/45 * * * *"# Ejecutar todos los días a las 02:00 AM UTC "*/15 * * * *" '0 2 * * *'
 
 jobs:
   scrape_and_commit:
