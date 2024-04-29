@@ -2,7 +2,7 @@ name: Daily Workflow
 
 on:
   schedule:
-    - cron: "*/30 * * * *" # Ejecutar cada 30 minutos
+    - cron: "*/15 * * * *" # Ejecutar cada 30 minutos
 jobs:
   scrape_and_commit:
     runs-on: ubuntu-latest
