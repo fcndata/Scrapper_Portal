@@ -19,7 +19,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Execute script
-        run: python your_script.py
+        run: python scrapper_gpt_copilot.py
       - name: Commit changes
         run: |
           msg="Updated: `date +'%Y-%m-%d %H:%M'`"
