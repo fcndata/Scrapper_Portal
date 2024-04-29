@@ -2,7 +2,7 @@ name: Daily Workflow
 
 on:
   schedule:
-    - cron: "*/15 * * * *" # Ejecutar todos los días a las 02:00 AM UTC
+    - cron: "*/15 * * * *"#'0 2 * * *'  # Ejecutar todos los días a las 02:00 AM UTC
 
 jobs:
   scrape_and_commit:
@@ -19,7 +19,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Execute script
-        run: python scrapper_gpt_copilot.py
+        run: python your_script.py
       - name: Commit changes
         run: |
           msg="Updated: `date +'%Y-%m-%d %H:%M'`"
