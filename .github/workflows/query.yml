@@ -27,6 +27,6 @@ jobs:
           msg="Updated: `date +'%Y-%m-%d %H:%M'`"
           git config --global user.email "facundo.toneguzzo@gmail.com"
           git config --global user.name "fcdata"
-          mkdir -p data && git add data/
+          git add data/
           git diff --quiet && git diff --staged --quiet || git commit -m "$msg"
           git push
