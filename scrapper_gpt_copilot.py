@@ -260,7 +260,7 @@ def get_article(url):
 get_article("https://www.portalinmobiliario.com/MLC-2398365192-oportunidad-providencia-departamento-e-yanez-_JM#position=15&search_layout=grid&type=item&tracking_id=daf8047a-24d9-42d9-aba3-8d0a1cc368c9")
 
 def get_local_path(processed_article):
-    base_path = Path("Scrapper_Portal/data")
+    base_path = Path("data")
     pub_date = datetime.fromisoformat(processed_article["Fecha_Publicacion"])
     year_folder = pub_date.strftime("%Y")
     file_name = f"{pub_date.strftime('%Y%m')}.csv"
