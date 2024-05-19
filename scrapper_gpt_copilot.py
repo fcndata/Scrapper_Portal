@@ -95,11 +95,17 @@ def extract_general_expenses(header):
 
 def extract_features(header):
     metraje = dormitorio = banos = 0
-    new_search = header.find_all("div", class_="ui-pdp-highlighted-specs-res__icon-label")
-    if len(new_search) == 3:
-        metraje = new_search[0].find('span').text.split()[0] if new_search[0] else metraje
-        dormitorio = new_search[1].find('span').text.split()[0] if new_search[1] else dormitorio
-        banos = new_search[2].find('span').text.split()[0] if new_search[2] else banos
+    # Buscar todos los elementos con la clase correspondiente a las características
+    feature_elements = header.find_all("div", class_="ui-pdp-highlighted-specs-res__icon-label")
+    for element in feature_elements:
+        text = element.get_text(strip=True)
+        
+        if "m² totales" in text :
+            metraje = int(text.split()[0].replace('.', ''))
+        elif "Dormitorios" in text or "Dormitorio" in text:
+            dormitorio = int(text.split()[0].replace('.', ''))
+        elif "Baños" in text or "Baño" in text:
+            banos = int(text.split()[0].replace('.', ''))
     return metraje, dormitorio, banos
 
 def process_header(header):
