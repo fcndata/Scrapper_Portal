@@ -16,6 +16,15 @@ from datetime import datetime
 from time import sleep,time
 from random import choice
 
+fieldnames = [
+    "url", "Name of the flat", "Value", "Currency", "General Expenses", 
+    "Size of the flat", "Bedrooms", "Bathrooms", "Seller", 
+    "metraje", "sup_terraza", "dormitorios", "estacionamiento", "bodegas", 
+    "piso_unidad", "cant_pisos", "dept_piso", "antiguedad", 
+    "gastos_comunes", "orientacion", "Superficie util", 
+    "Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion"
+]
+
 file_path = Path("data/scraped_urls_copilot.txt")
 
 def get_scraped_urls():
@@ -280,10 +289,10 @@ def save_csv(processed_article, local_path):
     local_path.parent.mkdir(parents=True, exist_ok=True)
     file_exists = local_path.is_file()
     with local_path.open("a", newline='', encoding="utf8") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=processed_article.keys())
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         if not file_exists:
             writer.writeheader()
-        writer.writerow(processed_article)
+        writer.writerow({field: processed_article.get(field, "") for field in fieldnames})
 
 urls_to_scrape = get_urls()
 for post_url in urls_to_scrape:
