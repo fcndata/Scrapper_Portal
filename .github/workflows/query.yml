@@ -27,7 +27,7 @@ jobs:
       - name: Commit changes
         run: |
           msg="Updated: `date +'%Y-%m-%d %H:%M'`"
-          git config --global user.email "facundo.toneguzzo@gmail.com"
+          git config --global user.email "facu_mt@hotmail.com"
           git config --global user.name "fcdata"
           git add data/
           git diff --quiet && git diff --staged --quiet || git commit -m "$msg"
