@@ -104,17 +104,22 @@ def extract_general_expenses(header):
 
 def extract_features(header):
     metraje = dormitorio = banos = 0
-    # Buscar todos los elementos con la clase correspondiente a las características
-    feature_elements = header.find_all("div", class_="ui-pdp-highlighted-specs-res__icon-label")
-    for element in feature_elements:
-        text = element.get_text(strip=True)
-        
-        if "m² totales" in text :
-            metraje = int(text.split()[0].replace('.', ''))
-        elif "Dormitorios" in text or "Dormitorio" in text:
-            dormitorio = int(text.split()[0].replace('.', ''))
-        elif "Baños" in text or "Baño" in text:
-            banos = int(text.split()[0].replace('.', ''))
+    try:
+        # Obtener todos los textos de las características en una lista
+        features_text = [value.get_text(strip=True) for value in header.find_all("div", {"class": "ui-pdp-highlighted-specs-res__icon-label"})]
+        for text in features_text:
+            try:
+                if "m² totales" in text or "Superficie total" in text:
+                    metraje = int(text.split()[0].replace('.', ''))
+                elif "Dormitorios" in text or "Dormitorio" in text:
+                    dormitorio = int(text.split()[0].replace('.', ''))
+                elif "Baños" in text or "Baño" in text:
+                    banos = int(text.split()[0].replace('.', ''))
+            except (IndexError, ValueError) as e:
+                print(f"Error processing feature text '{text}': {e}")
+    except Exception as e:
+        print(f"Error extracting features: {e}")
+
     return metraje, dormitorio, banos
 
 def process_header(header):
