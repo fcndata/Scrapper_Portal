@@ -2,7 +2,7 @@ name: Daily Workflow
 
 on:
   schedule:
-    - cron: "*/55 * * * *" # Ejecutar cada 55 minutos
+    - cron: "0 */8 * * *" # Ejecutar cada 8 horas
 
 jobs:
   scrape_and_commit:
