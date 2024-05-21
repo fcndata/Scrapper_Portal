@@ -19,9 +19,9 @@ from random import choice
 fieldnames = [
     "url", "Name of the flat", "Value", "Currency", "General Expenses",
     "Size of the flat", "Bedrooms", "Bathrooms", "Seller",
-    "metraje", "sup_terraza","ambientes","dormitorios", "estacionamiento", "bodegas",
+    "metraje", "sup_terraza", "Superficie util","ambientes","dormitorios", "estacionamiento", "bodegas",
     "piso_unidad", "cant_pisos", "dept_piso", "antiguedad",
-    "gastos_comunes", "orientacion", "Superficie util",
+    "gastos_comunes", "orientacion",
     "Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion"
 ]
 
