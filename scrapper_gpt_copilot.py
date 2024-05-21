@@ -105,14 +105,14 @@ def extract_general_expenses(header):
 def extract_features(header):
     metraje = dormitorio = banos = None
     try:
-        values = header.find(id="highlighted_specs_res").find("div",class_="ui-pdp-highlighted-specs-res").find_all(class_="ui-pdp-highlighted-specs-res__icon-label")
-        if len(values) > 0:
-            metraje = values[0].find('span').text.split()[0] if values[0] else metraje
-            dormitorio = values[1].find('span').text.split()[0] if values[1] else dormitorio
-            banos = values[2].find('span').text.split()[0] if values[2] else banos
+        values = header.find_all("div",class_="ui-pdp-highlighted-specs-res__icon-label")
+        metraje = values[0].find('span').text.split()[0] if values[0] else metraje
+        dormitorio = values[1].find('span').text.split()[0] if values[1] else dormitorio
+        banos = values[2].find('span').text.split()[0] if values[2] else banos
     except Exception as e:
         print(f"Error extracting features: {e}")
     return metraje, dormitorio, banos
+
 
 
 
