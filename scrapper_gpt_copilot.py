@@ -17,11 +17,11 @@ from time import sleep,time
 from random import choice
 
 fieldnames = [
-    "url", "Name of the flat", "Value", "Currency", "General Expenses", 
-    "Size of the flat", "Bedrooms", "Bathrooms", "Seller", 
-    "metraje", "sup_terraza", "dormitorios", "estacionamiento", "bodegas", 
-    "piso_unidad", "cant_pisos", "dept_piso", "antiguedad", 
-    "gastos_comunes", "orientacion", "Superficie util", 
+    "url", "Name of the flat", "Value", "Currency", "General Expenses",
+    "Size of the flat", "Bedrooms", "Bathrooms", "Seller",
+    "metraje", "sup_terraza","ambientes","dormitorios", "estacionamiento", "bodegas",
+    "piso_unidad", "cant_pisos", "dept_piso", "antiguedad",
+    "gastos_comunes", "orientacion", "Superficie util",
     "Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion"
 ]
 
@@ -150,13 +150,14 @@ def process_content(content):
         "Superficie total": ("metraje", convert_float),
         "Superficie de terraza": ("sup_terraza", convert_float),
         "Dormitorios": ("dormitorios", convert_float),
+        "Ambientes": ("ambientes",convert_float),
         "Estacionamientos": ("estacionamiento", convert_float),
         "Bodegas": ("bodegas", convert_float),
         "Número de piso de la unidad": ("piso_unidad", convert_float),
         "Cantidad de pisos": ("cant_pisos", convert_float),
         "Departamentos por piso": ("dept_piso", convert_float),
         "Antigüedad": ("antiguedad", lambda x: convert_float(x.split()[0])),
-        "Gastos comunes": ("gastos_comunes", convert_float),
+        "Gastos comunes": ("gastos_comunes", lambda x: x),
         "Orientación": ("orientacion", lambda x: x)
     }
 
