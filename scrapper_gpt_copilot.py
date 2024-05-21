@@ -144,7 +144,7 @@ def convert_float(value):
     try:
         return float(value.replace(",", ".").split()[0])
     except ValueError:
-        return 0
+        return None # 
 def process_content(content):
     fields = {
         "Superficie total": ("metraje", convert_float),
@@ -156,7 +156,7 @@ def process_content(content):
         "Cantidad de pisos": ("cant_pisos", convert_float),
         "Departamentos por piso": ("dept_piso", convert_float),
         "Antigüedad": ("antiguedad", lambda x: convert_float(x.split()[0])),
-        "Gastos comunes": ("gastos_comunes", lambda x: x),
+        "Gastos comunes": ("gastos_comunes", convert_float),
         "Orientación": ("orientacion", lambda x: x)
     }
 
