@@ -103,23 +103,16 @@ def extract_general_expenses(header):
     return int(header.find(id="maintenance_fee_vis").text.split('Gastos comunes aproximados $\xa0')[1].replace('.', '')) if header.find(id="maintenance_fee_vis") else "Sin información"
 
 def extract_features(header):
-    metraje = dormitorio = banos = 0
+    metraje = dormitorio = banos = None
     try:
-        # Obtener todos los textos de las características en una lista
-        features_text = [value.get_text(strip=True) for value in header.find_all("div", {"class": "ui-pdp-highlighted-specs-res__icon-label"})]
-        for text in features_text:
-            try:
-                if "m² totales" in text or "Superficie total" in text:
-                    metraje = int(text.split()[0].replace('.', ''))
-                elif "Dormitorios" in text or "Dormitorio" in text:
-                    dormitorio = int(text.split()[0].replace('.', ''))
-                elif "Baños" in text or "Baño" in text:
-                    banos = int(text.split()[0].replace('.', ''))
-            except (IndexError, ValueError) as e:
-                print(f"Error processing feature text '{text}': {e}")
+        filter=header.find("div",id="highlighted_specs_res")
+        values = filter.find_all("div", {"class": "ui-pdp-highlighted-specs-res__icon-label"})
+        if len(values) == 3:
+            metraje = values[0].find('span').text.split()[0] if values[0] else metraje
+            dormitorio = values[1].find('span').text.split()[0] if values[1] else dormitorio
+            banos = values[2].find('span').text.split()[0] if values[2] else banos
     except Exception as e:
         print(f"Error extracting features: {e}")
-
     return metraje, dormitorio, banos
 
 def process_header(header):
