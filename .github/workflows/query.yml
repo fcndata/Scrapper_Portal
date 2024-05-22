@@ -1,12 +1,8 @@
 name: Branch feature_description
 
 on:
-#  schedule:
-#    - cron: "0 */3 * * *" # Ejecutar cada 3 horas
-#    on:
   schedule:
-    - cron: "30 * * * *"  # Ejecutar cada hora en el minuto 30
-
+    - cron: "0 */3 * * *" # Ejecutar cada 3 horas
 jobs:
   scrape_and_commit:
     runs-on: ubuntu-latest
