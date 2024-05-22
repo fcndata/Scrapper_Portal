@@ -60,7 +60,7 @@ def get_urls():
                 response = requests.get(url, timeout=10)
                 response.raise_for_status()
                 soup = BeautifulSoup(response.text, 'html.parser')
-                results_lists = soup.find_all("div", {"class": "ui-search-layout ui-search-layout--grid"})
+                results_lists = soup.find_all("ol", {"class": "ui-search-layout ui-search-layout--grid"})
 
                 for results_list in results_lists:
                     items = results_list.find_all("li", {"class": "ui-search-layout__item"})
