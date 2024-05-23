@@ -2,7 +2,7 @@ name: feature_description
 on:
   workflow_dispatch:  # Permite ejecutar el workflow manualmente
   schedule:
-    - cron: "0 */3 * * *"  # Ejecutar cada 3 horas
+    - cron: "0 */3 * * *"  
   
 jobs:
   scrape_and_commit:
