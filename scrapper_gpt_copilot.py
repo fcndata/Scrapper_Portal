@@ -154,7 +154,7 @@ def process_content(content):
         "Cantidad de pisos": ("cant_pisos", convert_float),
         "Departamentos por piso": ("dept_piso", convert_float),
         "Antigüedad": ("antiguedad", lambda x: convert_float(x.split()[0])),
-        "Tipo de departamento": ("tipo_depa", lambda x: x.split()[0]),
+        "Tipo de departamento": ("tipo_depa", lambda x: x),
         "Orientación": ("orientacion", lambda x: x)
     }
 
