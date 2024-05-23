@@ -3,7 +3,7 @@ name: Daily Workflow
 on:
   schedule:
     - cron: "0 */2 * * *" # Ejecutar cada 3 horas
-
+  workflow_dispatch:
 jobs:
   scrape_and_commit:
     runs-on: ubuntu-latest
