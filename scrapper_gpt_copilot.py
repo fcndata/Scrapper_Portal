@@ -19,11 +19,10 @@ from random import choice
 fieldnames = [
     "url", "Name of the flat", "Value", "Currency", "General Expenses",
     "Size of the flat", "Bedrooms", "Bathrooms", "Seller",
-    "metraje", "sup_terraza", "Superficie util","ambientes","dormitorios", "estacionamiento", "bodegas",
-    "piso_unidad", "cant_pisos", "dept_piso", "antiguedad",
-    "gastos_comunes", "orientacion",
-    "Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion"
-]
+    "metraje", "sup_terraza", "sup_util","ambientes","dormitorios","banos", "estacionamiento",
+    "bodegas","piso_unidad", "cant_pisos", "dept_piso", "antiguedad",
+    "tipo_depa", "orientacion","Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion","Description"
+    ]
 
 file_path = Path("data/scraped_urls_copilot.txt")
 
@@ -60,7 +59,7 @@ def get_urls():
                 response = requests.get(url, timeout=10)
                 response.raise_for_status()
                 soup = BeautifulSoup(response.text, 'html.parser')
-                results_lists = soup.find_all("ol", {"class": "ui-search-layout ui-search-layout--grid"})
+                results_lists = soup.find_all("ol", {"class": "ui-search-layout ui-search-layout--grid"}) # cambio div por ol
 
                 for results_list in results_lists:
                     items = results_list.find_all("li", {"class": "ui-search-layout__item"})
@@ -103,18 +102,15 @@ def extract_general_expenses(header):
     return int(header.find(id="maintenance_fee_vis").text.split('Gastos comunes aproximados $\xa0')[1].replace('.', '')) if header.find(id="maintenance_fee_vis") else "Sin información"
 
 def extract_features(header):
+    values = header.find_all("div",class_="ui-pdp-highlighted-specs-res__icon-label")
     metraje = dormitorio = banos = None
     try:
-        values = header.find_all("div",class_="ui-pdp-highlighted-specs-res__icon-label")
         metraje = values[0].find('span').text.split()[0] if values[0] else metraje
         dormitorio = values[1].find('span').text.split()[0] if values[1] else dormitorio
         banos = values[2].find('span').text.split()[0] if values[2] else banos
     except Exception as e:
         print(f"Error extracting features: {e}")
     return metraje, dormitorio, banos
-
-
-
 
 def process_header(header):
     name = extract_name(header)
@@ -139,11 +135,14 @@ def convert_float(value):
         return float(value.replace(",", ".").split()[0])
     except ValueError:
         return None # 
+
 def process_content(content):
     fields = {
         "Superficie total": ("metraje", convert_float),
         "Superficie de terraza": ("sup_terraza", convert_float),
+        "Superficie útil": ("sup_util",convert_float),
         "Dormitorios": ("dormitorios", convert_float),
+        "Baños":("banos",convert_float),
         "Ambientes": ("ambientes",convert_float),
         "Estacionamientos": ("estacionamiento", convert_float),
         "Bodegas": ("bodegas", convert_float),
@@ -151,59 +150,54 @@ def process_content(content):
         "Cantidad de pisos": ("cant_pisos", convert_float),
         "Departamentos por piso": ("dept_piso", convert_float),
         "Antigüedad": ("antiguedad", lambda x: convert_float(x.split()[0])),
-        "Gastos comunes": ("gastos_comunes", lambda x: x.split()[0]),
+        "Tipo de departamento": ("tipo_depa", lambda x: x),
         "Orientación": ("orientacion", lambda x: x)
     }
 
-    article_content = {
-        "Fecha_Publicacion": datetime.now().strftime('%Y-%m-%d')
+    article_content = {      
     }
 
-    if content:
-        for table_work in content:
-            result_table = table_work.find_all("tr")
-            for row in result_table:
-                header_text = row.find("th").get_text(strip=True) if row.find("th") else ""
-                value_text = row.find("td").get_text(strip=True) if row.find("td") else ""
+    for table_work in content:
+        result_table = table_work.find_all("tr")
+        for row in result_table:
+            header_text = row.find("th").get_text(strip=True) if row.find("th") else "-"
+            value_text = row.find("td").get_text(strip=True) if row.find("td") else "-"
 
-                if header_text in fields:
-                    field_key, func = fields[header_text]
-                    article_content[field_key] = func(value_text)
+            if header_text in fields:
+                field_key, func = fields[header_text]
+                article_content[field_key] = func(value_text)
 
-    # Calculate 'Superficie util' based on other fields
-    article_content["Superficie util"] = article_content.get("metraje", 0) - article_content.get("sup_terraza", 0)
+    
+    #article_content["Superficie util"] = article_content.get("metraje", 0) - article_content.get("sup_terraza", 0)
 
     return article_content
 
 def process_location(location):
-    now = datetime.now()
-
     try:
         p_tag = location.find('p', class_="ui-pdp-color--BLACK ui-pdp-size--SMALL ui-pdp-family--REGULAR ui-pdp-media__title")
         address_list = p_tag.text.split(',') if p_tag else []
-
         if len(address_list) < 4:
             return {
                 "Calle": " - ",
                 "Barrio": " - ",
                 "Comuna": " - ",
                 "Ciudad": " - ",
-                "Dirección": ", ".join(address_list),
-                "Fecha_Publicacion": now.strftime('%Y-%m-%d')
-            }
-
+                "Dirección": ", ".join(address_list)}
         return {
             "Calle": address_list[0],
             "Barrio": address_list[1],
             "Comuna": address_list[2],
             "Ciudad": address_list[3],
-            "Dirección": ", ".join(address_list),
-            "Fecha_Publicacion": now.strftime('%Y-%m-%d')
-        }
+            "Dirección": ", ".join(address_list)}
     except Exception as e:
         print(f"Error al procesar la ubicación: {e}")
         return
 
+def process_description(description):
+    now = datetime.now()
+    return {"Description": description.p.text,
+            "Fecha_Publicacion": now.strftime('%Y-%m-%d')}
+    
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Safari/605.1.15",
@@ -220,6 +214,7 @@ def get_article(url):
     header_obtained = False
     content_obtained = False
     location_obtained = False
+    description_obtained = False
     attempt = 0
     while attempt < max_attempts:
         try:
@@ -228,7 +223,6 @@ def get_article(url):
             response = requests.get(url, headers=headers)
             response.raise_for_status()
             soup = BeautifulSoup(response.text, 'html.parser')
-
             article = soup.find(id="root-app")
             if not article:
                 raise ValueError("El artículo base no fue encontrado en el DOM.")
@@ -239,7 +233,6 @@ def get_article(url):
                     header_obtained = True
                 else:
                     print(f"Header no encontrado con el header: {headers}")
-
             if not content_obtained:
                 content = article.find_all("tbody", class_="andes-table__body")
                 if content:
@@ -255,10 +248,17 @@ def get_article(url):
                     location_obtained = True
                 else:
                     print(f"Location no encontrado con el header: {headers}")
-
+        
+            if not description_obtained:
+                description = article.find("div", id="description")
+                if description:
+                    description_content=process_description(description)
+                    description_obtained = True
+                else:
+                    print(f"Description no encontrado con el header: {headers}")
             # Si todos los componentes han sido obtenidos, retornar los datos
-            if header_obtained and content_obtained and location_obtained:
-                return  {"url": url, **header_content, **article_content, **location_content,"user_agent":headers,"intento":attempt }
+            if header_obtained and content_obtained and location_obtained and description_obtained:
+                return  {"url": url, **header_content, **article_content, **location_content, **description_content,"user_agent":headers,"intento":attempt }
 
             attempt += 1
             sleep(3)
@@ -271,8 +271,6 @@ def get_article(url):
 
     print("No se pudo obtener la información después de varios intentos.")
     return None
-
-get_article("https://www.portalinmobiliario.com/MLC-2398365192-oportunidad-providencia-departamento-e-yanez-_JM#position=15&search_layout=grid&type=item&tracking_id=daf8047a-24d9-42d9-aba3-8d0a1cc368c9")
 
 def get_local_path(processed_article):
     base_path = Path("data")
