@@ -1,6 +1,6 @@
 name: feature_description
 on:
-  #workflow_dispatch:  # Permite ejecutar el workflow manualmente
+  workflow_dispatch:  # Permite ejecutar el workflow manualmente
   schedule:
     - cron: "0 */3 * * *"  
   
