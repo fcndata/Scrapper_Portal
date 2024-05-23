@@ -1,4 +1,4 @@
-name: feature_description
+name: feature
 on:
   workflow_dispatch:  # Permite ejecutar el workflow manualmente
 
