@@ -16,13 +16,12 @@ from datetime import datetime
 from time import sleep,time
 from random import choice
 
-
 fieldnames = [
     "url", "Name of the flat", "Value", "Currency", "General Expenses",
     "Size of the flat", "Bedrooms", "Bathrooms", "Seller",
-    "Superficie total", "Superficie de terraza", "Superficie util","Ambientes","Dormitorios","Baños", "Estacionamientos",
-    "Bodegas","Número de piso de la unidad", "Cantidad de pisos", "Departamentos por piso", "Antiguedad",
-    "Tipo de departamento", "Orientación","Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion","Descripcion"
+    "metraje", "sup_terraza", "sup_util","ambientes","dormitorios","banos", "estacionamiento",
+    "bodegas","piso_unidad", "cant_pisos", "dept_piso", "antiguedad",
+    "tipo_depa", "orientacion","Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion","Descripcion"
     ]
 
 file_path = Path("data/scraped_urls_copilot.txt")
@@ -60,7 +59,7 @@ def get_urls():
                 response = requests.get(url, timeout=10)
                 response.raise_for_status()
                 soup = BeautifulSoup(response.text, 'html.parser')
-                results_lists = soup.find_all("ol", {"class": "ui-search-layout ui-search-layout--grid"})
+                results_lists = soup.find_all("ol", {"class": "ui-search-layout ui-search-layout--grid"}) # cambio div por ol
 
                 for results_list in results_lists:
                     items = results_list.find_all("li", {"class": "ui-search-layout__item"})
@@ -136,34 +135,44 @@ def convert_float(value):
         return float(value.replace(",", ".").split()[0])
     except ValueError:
         return None # 
+def convert_float(value):
+    try:
+        return float(value.replace(",", ".").split()[0])
+    except ValueError:
+        return 0
 def process_content(content):
     fields = {
         "Superficie total": ("metraje", convert_float),
         "Superficie de terraza": ("sup_terraza", convert_float),
-        "Superficie util":("metraje"-"sup_terraza"),
-        "Ambientes": ("ambientes",convert_float),
+        "Superficie útil": ("sup_util",convert_float),
         "Dormitorios": ("dormitorios", convert_float),
         "Baños":("banos",convert_float),
+        "Ambientes": ("ambientes",convert_float),
         "Estacionamientos": ("estacionamiento", convert_float),
         "Bodegas": ("bodegas", convert_float),
         "Número de piso de la unidad": ("piso_unidad", convert_float),
         "Cantidad de pisos": ("cant_pisos", convert_float),
         "Departamentos por piso": ("dept_piso", convert_float),
         "Antigüedad": ("antiguedad", lambda x: convert_float(x.split()[0])),
-        "Tipo de departamento": ("tipo_depa", lambda x:x),
-        "Orientación": ("orientacion", lambda x: x)}
+        "Tipo de departamento": ("tipo_depa", lambda x: x.split()[0]),
+        "Orientación": ("orientacion", lambda x: x)
+    }
+
+    article_content = {      
+    }
 
     for table_work in content:
         result_table = table_work.find_all("tr")
         for row in result_table:
-            header_text = row.find("th").get_text(strip=True) if row.find("th") else ""
-            value_text = row.find("td").get_text(strip=True) if row.find("td") else ""
+            header_text = row.find("th").get_text(strip=True) if row.find("th") else "-"
+            value_text = row.find("td").get_text(strip=True) if row.find("td") else "-"
 
             if header_text in fields:
                 field_key, func = fields[header_text]
                 article_content[field_key] = func(value_text)
 
-    article_content["Superficie util"] = article_content.get("metraje", 0) - article_content.get("sup_terraza", 0)
+    
+    #article_content["Superficie util"] = article_content.get("metraje", 0) - article_content.get("sup_terraza", 0)
 
     return article_content
 
@@ -190,12 +199,9 @@ def process_location(location):
 
 def process_description(description):
     now = datetime.now()
-    try:
-        except Exception as e:
-        print(f"Error al procesar la description: {e}")
-        return {"Description": description.p.text,
-               "Fecha_Publicacion": now.strftime('%Y-%m-%d')}
-        
+    return {"Description": description.p.text,
+            "Fecha_Publicacion": now.strftime('%Y-%m-%d')}
+    
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Safari/605.1.15",
