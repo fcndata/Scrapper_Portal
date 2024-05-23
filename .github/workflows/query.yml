@@ -1,4 +1,4 @@
-name: Branch feature_description
+name: feature_description
 on:
   workflow_dispatch:  # Permite ejecutar el workflow manualmente
   schedule:
@@ -27,7 +27,7 @@ jobs:
           python scrapper_gpt_copilot.py
       - name: Commit changes
         run: |
-          git config --global user.email "facu_mt@hotmail.com"
+          git config --global user.email "facundo.toneguzzo@gmail.com"
           git config --global user.name "fcdata"
           git pull origin feature_description 
           git add data/
