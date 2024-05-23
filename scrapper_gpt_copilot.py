@@ -21,7 +21,7 @@ fieldnames = [
     "Size of the flat", "Bedrooms", "Bathrooms", "Seller",
     "metraje", "sup_terraza", "sup_util","ambientes","dormitorios","banos", "estacionamiento",
     "bodegas","piso_unidad", "cant_pisos", "dept_piso", "antiguedad",
-    "tipo_depa", "orientacion","Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion","Descripcion"
+    "tipo_depa", "orientacion","Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion","Description"
     ]
 
 file_path = Path("data/scraped_urls_copilot.txt")
