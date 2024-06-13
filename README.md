@@ -1,1 +1,1 @@
-Revisión de nuevas publicaciones en portal
+Scrapper_Portal es un proyecto de scraping de datos diseñado para extraer información de Portal Inmobiliario. Este repositorio incluye scripts en Python que, a partir de GitHub Actions, permiten la recolección de datos de manera automatizada y eficiente. El objetivo principal es automatizar el proceso de recolección de datos para desarrollar posteriormente modelos de Machine Learning en el mercado inmobiliario.
