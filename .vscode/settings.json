@@ -15,7 +15,7 @@
     // Terminal settings
     "terminal.integrated.shell.windows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
     "terminal.integrated.env.windows": {
-        "PYTHONPATH": "${workspaceFolder}/src"
+        "PYTHONPATH": "${workspaceFolder}/src;${workspaceFolder}/src/module"
     },
     // Files and folders
     "files.exclude": {
