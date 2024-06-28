@@ -36,7 +36,63 @@ def convert_float(value):
         return float(value.replace(",", ".").split()[0])
     except ValueError:
         return None 
+
+
+def process_content(content):
+    fields = {
+        "Superficie total": ("metraje", convert_float),
+        "Superficie de terraza": ("sup_terraza", convert_float),
+        "Superficie útil": ("sup_util",convert_float),
+        "Dormitorios": ("dormitorios", convert_float),
+        "Baños":("banos",convert_float),
+        "Ambientes": ("ambientes",convert_float),
+        "Estacionamientos": ("estacionamiento", convert_float),
+        "Bodegas": ("bodegas", convert_float),
+        "Número de piso de la unidad": ("piso_unidad", convert_float),
+        "Cantidad de pisos": ("cant_pisos", convert_float),
+        "Departamentos por piso": ("dept_piso", convert_float),
+        "Antigüedad": ("antiguedad", lambda x: convert_float(x.split()[0])),
+        "Tipo de departamento": ("tipo_depa", lambda x: x),
+        "Orientación": ("orientacion", lambda x: x)
+    }
+
+    article_content = {      
+    }
+
+    for table_work in content:
+        result_table = table_work.find_all("tr")
+        for row in result_table:
+            header_text = row.find("th").get_text(strip=True) if row.find("th") else "-"
+            value_text = row.find("td").get_text(strip=True) if row.find("td") else "-"
+
+            if header_text in fields:
+                field_key, func = fields[header_text]
+                article_content[field_key] = func(value_text)
+
     
+    return article_content
+
+def process_location(location):
+    try:
+        p_tag = location.find('p', class_="ui-pdp-color--BLACK ui-pdp-size--SMALL ui-pdp-family--REGULAR ui-pdp-media__title")
+        address_list = p_tag.text.split(',') if p_tag else []
+        if len(address_list) < 4:
+            return {
+                "Calle": " - ",
+                "Barrio": " - ",
+                "Comuna": " - ",
+                "Ciudad": " - ",
+                "Dirección": ", ".join(address_list)}
+        return {
+            "Calle": address_list[0],
+            "Barrio": address_list[1],
+            "Comuna": address_list[2],
+            "Ciudad": address_list[3],
+            "Dirección": ", ".join(address_list)}
+    except Exception as e:
+        print(f"Error al procesar la ubicación: {e}")
+        return
+
 def process_description(description):
     now = datetime.now()
     return {"Description": description.p.text,

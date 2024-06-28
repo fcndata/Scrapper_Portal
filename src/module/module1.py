@@ -1,10 +1,10 @@
 #module files
 import requests
-
 from bs4 import BeautifulSoup
 from time import time
+from param import file_path
 
-def get_scraped_urls():
+def get_scraped_urls(file_path):
     scraped_urls = []
     if file_path.exists():
         try:
@@ -14,19 +14,16 @@ def get_scraped_urls():
             print(f"Error al leer el archivo: {e}")
     return scraped_urls
 
-def append_scraped_urls(urls):
+def append_scraped_urls(urls,file_path):
     try:
         with file_path.open("a") as url_file: # "a" append
             url_file.writelines(f"{url}\n" for url in urls)
     except Exception as e:
         print(f"Error al escribir en el archivo: {e}")
 
-def get_urls():
-    final_url = [
-        "https://www.portalinmobiliario.com/venta/departamento/las-condes-metropolitana/_OrderId_BEGINS*DESC",
-        "https://www.portalinmobiliario.com/venta/departamento/vitacura-metropolitana/_OrderId_BEGINS*DESC",
-        "https://www.portalinmobiliario.com/venta/departamento/providencia-metropolitana/_OrderId_BEGINS*DESC"
-    ]
+
+def get_urls(final_url):
+
     all_hrefs = set()
 
     for url in final_url:

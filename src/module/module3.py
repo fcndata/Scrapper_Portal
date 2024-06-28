@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from time import sleep
 from random import choice
+from module2 import process_header,process_content,process_description,process_location
+from param import user_agents,fieldnames
 
 def get_article(url):
     max_attempts = 15
