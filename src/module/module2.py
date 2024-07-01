@@ -7,18 +7,33 @@ def extract_seller(header):
     return header.find(id="header").find("div",class_="ui-pdp-seller-validated").a.text if header.find(id="header").find("div",class_="ui-pdp-seller-validated") else "Sin información"
 
 def extract_value_and_currency(header):
-    price_container = header.find(id="price")
     value, currency = None, None
-    if price_container:
-        value_container = price_container.find("span", class_="andes-money-amount__fraction")
-        value = int(value_container.text.replace('.', '')) if value_container else None
-        uf_symbol = price_container.find("span", itemprop="priceCurrency", string="UF")
-        clp_symbol = price_container.find("span", itemprop="priceCurrency", string="$")
-        currency = "UF" if uf_symbol else ("CLP" if clp_symbol else None)
-    return value, currency
+    try:
+        price_container = header.find(id="price")
+        if price_container:
+            value_container = price_container.find("span", class_="andes-money-amount__fraction")
+            value = int(value_container.text.replace('.', '')) if value_container else None
+            uf_symbol = price_container.find("span", itemprop="priceCurrency", string="UF")
+            clp_symbol = price_container.find("span", itemprop="priceCurrency", string="$")
+            currency = "UF" if uf_symbol else ("CLP" if clp_symbol else None)
+            return value, currency
+        else:
+            return None, None
+    except (IndexError, ValueError, AttributeError) as e:
+        print(f"Error al extraer los gastos comunes: {e}")
+        return None
 
 def extract_general_expenses(header):
-    return int(header.find(id="maintenance_fee_vis").text.split('Gastos comunes aproximados $\xa0')[1].replace('.', '')) if header.find(id="maintenance_fee_vis") else "Sin información"
+    try:
+        maintenance_fee_element = header.find(id="maintenance_fee_vis")
+        if maintenance_fee_element:
+            fee_text = maintenance_fee_element.text.split('Gastos comunes aproximados $\xa0')[1]
+            return int(fee_text.replace('.', ''))
+        else:
+            return None
+    except (IndexError, ValueError, AttributeError) as e:
+        print(f"Error al extraer los gastos comunes: {e}")
+        return None
 
 def extract_features(header):
     values = header.find_all("div",class_="ui-pdp-highlighted-specs-res__icon-label")
