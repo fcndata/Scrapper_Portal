@@ -2,25 +2,22 @@
 import requests
 from bs4 import BeautifulSoup
 from time import time
-from param import file_path
+from param import file_path,final_url
 from typing import List
 from pathlib import Path
 
 
 def get_scraped_urls(file_path):
     scraped_urls = []
-    if file_path.exists():
-        try:
-            with file_path.open() as url_file:
-                scraped_urls = [line.strip() for line in url_file]
-        except FileNotFoundError as fnf_error:
-            print(f"Error: el archivo no se encontró. Detalles: {fnf_error}")
-        except IOError as io_error:
-            print(f"Error de entrada/salida al leer el archivo. Detalles: {io_error}")
-        except Exception as e:
-            print(f"Ocurrió un error inesperado: {e}")
-    else:
-        print(f"El archivo {file_path} no existe.")
+    try:
+        with file_path.open() as url_file:
+            scraped_urls = [line.strip() for line in url_file]
+    except FileNotFoundError as fnf_error:
+        print(f"Error: el archivo no se encontró. Detalles: {fnf_error}")
+    except IOError as io_error:
+        print(f"Error de entrada/salida al leer el archivo. Detalles: {io_error}")
+    except Exception as e:
+        print(f"Ocurrió un error inesperado: {e}")
     return scraped_urls
 
 def append_scraped_urls(urls,file_path):
@@ -44,7 +41,6 @@ def request_url(url: str):
 
 def get_urls(final_url: List[str]):
     all_hrefs = set()
-
     for url in final_url:
         max_retries = len(final_url)
         retry_delay = 1  # segundos
@@ -75,7 +71,7 @@ def get_urls(final_url: List[str]):
 
 
 def get_urls_to_scrape():
-    existing_urls = set(get_scraped_urls())
-    all_urls = get_urls()
+    existing_urls = set(get_scraped_urls(file_path))
+    all_urls = get_urls(final_url)
     urls_to_scrape = [url for url in all_urls if url not in existing_urls]
     return urls_to_scrape

@@ -1,4 +1,5 @@
 from datetime import datetime
+from utilities import is_number,convert_float
 
 def extract_name(header):
     return header.find(id="header").h1.text
@@ -10,48 +11,41 @@ def extract_value_and_currency(header):
     value, currency = None, None
     try:
         price_container = header.find(id="price")
-        if price_container:
-            value_container = price_container.find("span", class_="andes-money-amount__fraction")
-            value = int(value_container.text.replace('.', '')) if value_container else None
-            uf_symbol = price_container.find("span", itemprop="priceCurrency", string="UF")
-            clp_symbol = price_container.find("span", itemprop="priceCurrency", string="$")
-            currency = "UF" if uf_symbol else ("CLP" if clp_symbol else None)
-            return value, currency
-        else:
-            return None, None
+        value_container = price_container.find("span", class_="andes-money-amount__fraction")
+        uf_symbol = price_container.find("span", itemprop="priceCurrency", string="UF")
+        clp_symbol = price_container.find("span", itemprop="priceCurrency", string="$")
     except (IndexError, ValueError, AttributeError) as e:
-        print(f"Error al extraer los gastos comunes: {e}")
-        return None
+        print(f"Error al extraer el header: {e}")
+        return None, None
+    else:
+        value = int(value_container.text.replace('.', ''))
+        currency = "UF" if uf_symbol else ("CLP" if clp_symbol else None)
+        return value, currency
 
 def extract_general_expenses(header):
     try:
-        maintenance_fee_element = header.find(id="maintenance_fee_vis")
-        if maintenance_fee_element:
-            fee_text = maintenance_fee_element.text.split('Gastos comunes aproximados $\xa0')[1]
-            return int(fee_text.replace('.', ''))
-        else:
-            return None
+        gastos_comunes=header.find(id="maintenance_fee_vis")
     except (IndexError, ValueError, AttributeError) as e:
         print(f"Error al extraer los gastos comunes: {e}")
-        return None
-
+    else:
+        return is_number(gastos_comunes)
+    
 def extract_features(header):
-    values = header.find_all("div",class_="ui-pdp-highlighted-specs-res__icon-label")
     metraje = dormitorio = banos = None
     try:
-        metraje = values[0].find('span').text.split()[0] if values[0] else metraje
-        dormitorio = values[1].find('span').text.split()[0] if values[1] else dormitorio
-        banos = values[2].find('span').text.split()[0] if values[2] else banos
+        values = header.find_all("div",class_="ui-pdp-highlighted-specs-res__icon-label")
     except Exception as e:
         print(f"Error extracting features: {e}")
+    else:
+        for value in values:
+            text = value.find('span').text.split()
+            if any(word in text for word in ['total', 'totales']):
+                metraje = is_number(text)
+            elif any(word in text for word in ['dormitorio', 'dormitorios']):
+                dormitorio = is_number(text)
+            elif any(word in text for word in ['bano', 'banos', 'baño', 'baños']):
+                banos = is_number(text)
     return metraje, dormitorio, banos
-
-def convert_float(value):
-    try:
-        return float(value.replace(",", ".").split()[0])
-    except ValueError:
-        return None 
-
 
 def process_content(content):
     fields = {
@@ -90,23 +84,30 @@ def process_content(content):
 def process_location(location):
     try:
         p_tag = location.find('p', class_="ui-pdp-color--BLACK ui-pdp-size--SMALL ui-pdp-family--REGULAR ui-pdp-media__title")
-        address_list = p_tag.text.split(',') if p_tag else []
-        if len(address_list) < 4:
+        address_list = [part.strip() for part in p_tag.text.split(',')]
+        try:
             return {
-                "Calle": " - ",
-                "Barrio": " - ",
-                "Comuna": " - ",
-                "Ciudad": " - ",
+                "Calle": address_list[0],
+                "Barrio": address_list[1],
+                "Comuna": address_list[2],
+                "Ciudad": address_list[3],
                 "Dirección": ", ".join(address_list)}
-        return {
-            "Calle": address_list[0],
-            "Barrio": address_list[1],
-            "Comuna": address_list[2],
-            "Ciudad": address_list[3],
-            "Dirección": ", ".join(address_list)}
+        except IndexError as ie:
+            print(f"Error al acceder a los elementos de la dirección: {ie}")
+            return {
+                "Calle": None,
+                "Barrio": None,
+                "Comuna": None,
+                "Ciudad": None,
+                "Dirección": ", ".join(address_list) if address_list else None}
     except Exception as e:
         print(f"Error al procesar la ubicación: {e}")
-        return
+        return {
+            "Calle": None,
+            "Barrio": None,
+            "Comuna": None,
+            "Ciudad": None,
+            "Dirección": None}
 
 def process_description(description):
     now = datetime.now()
