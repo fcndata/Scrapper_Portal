@@ -1,9 +1,10 @@
 def is_number(text):
     for value in text:
-        try:
-            return int(value.replace('.', ''))
-        except (ValueError, AttributeError) as e:
-            continue
+        if value and isinstance(value, str):  # Asegurarse de que el valor no sea None y sea una cadena
+            try:
+                return int(value.replace('.', ''))
+            except ValueError:
+                None
     return None
 
 def convert_float(value):

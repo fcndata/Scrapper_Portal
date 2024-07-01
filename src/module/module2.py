@@ -1,6 +1,7 @@
 from datetime import datetime
 from utilities import is_number,convert_float
 
+
 def extract_name(header):
     return header.find(id="header").h1.text
 
@@ -46,6 +47,24 @@ def extract_features(header):
             elif any(word in text for word in ['bano', 'banos', 'baño', 'baños']):
                 banos = is_number(text)
     return metraje, dormitorio, banos
+
+def process_header(header):
+    name = extract_name(header)
+    seller = extract_seller(header)
+    value, currency = extract_value_and_currency(header)
+    general_expenses = extract_general_expenses(header)
+    metraje, dormitorio, banos = extract_features(header)
+
+    return {
+        "Name of the flat": name,
+        "Value": value,
+        "Currency": currency,
+        "General Expenses": general_expenses,
+        "Size of the flat": metraje,
+        "Bedrooms": dormitorio,
+        "Bathrooms": banos,
+        "Seller": seller
+    }
 
 def process_content(content):
     fields = {
