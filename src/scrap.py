@@ -1,7 +1,6 @@
 import requests
 import csv
 from module.module1 import get_urls,append_scraped_urls
-#
 from module.module3 import get_article,get_local_path,save_csv
 from param import final_url
 

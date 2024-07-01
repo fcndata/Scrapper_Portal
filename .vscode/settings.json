@@ -15,7 +15,7 @@
     // Terminal settings
     "terminal.integrated.shell.windows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
     "terminal.integrated.env.windows": {
-        "PYTHONPATH": "${workspaceFolder}/src;${workspaceFolder}/src/module"
+        "PYTHONPATH": "${workspaceFolder}/src/module;${workspaceFolder}/src"
     },
     // Files and folders
     "files.exclude": {
@@ -25,5 +25,8 @@
     },
     "files.autoSave": "onFocusChange",
     // Workbench settings
-    "workbench.colorTheme": "Visual Studio Dark"
+    "workbench.colorTheme": "Visual Studio Dark",
+    "python.analysis.extraPaths": [
+        "./src/module"
+    ]
 }

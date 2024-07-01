@@ -6,9 +6,9 @@ fieldnames = [
     "bodegas","piso_unidad", "cant_pisos", "dept_piso", "antiguedad",
     "tipo_depa", "orientacion","Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion","Description"]
 
-file_path = Path("data/raw/2024/scraped_urls_copilot.txt")
+file_path = Path("../data/raw/2024/scraped_urls.txt")
 
-raw_data_path="data/raw"
+raw_data_path="../data/raw"
 
 final_url = [
         "https://www.portalinmobiliario.com/venta/departamento/las-condes-metropolitana/_OrderId_BEGINS*DESC",
