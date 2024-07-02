@@ -28,7 +28,7 @@ jobs:
       - name: Data directory exist & execute script 
         run: |
           mkdir -p data/raw/2024
-          python scrap.py
+          python src/scrap.py
 
       - name: Commit changes
         run: |
