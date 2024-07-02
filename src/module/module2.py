@@ -107,22 +107,25 @@ def process_content(content):
 def process_location(location):
     try:
         p_tag = location.find('p', class_="ui-pdp-color--BLACK ui-pdp-size--SMALL ui-pdp-family--REGULAR ui-pdp-media__title")
-        address_list = [part.strip() for part in p_tag.text.split(',')]
-        try:
-            return {
-                "Calle": address_list[0],
-                "Barrio": address_list[1],
-                "Comuna": address_list[2],
-                "Ciudad": address_list[3],
-                "Dirección": ", ".join(address_list)}
-        except IndexError as ie:
-            print(f"Error al acceder a los elementos de la dirección: {ie}")
-            return {
-                "Calle": None,
-                "Barrio": None,
-                "Comuna": None,
-                "Ciudad": None,
-                "Dirección": ", ".join(address_list) if address_list else None}
+        if p_tag and p_tag.text:
+            address_list = [part.strip() for part in p_tag.text.split(',')]
+            if len(address_list) >= 4:
+                return {
+                    "Calle": address_list[0],
+                    "Barrio": address_list[1],
+                    "Comuna": address_list[2],
+                    "Ciudad": address_list[3],
+                    "Dirección": ", ".join(address_list)
+                }
+            else:
+                print("La lista de direcciones no tiene suficientes elementos.")
+                return {
+                    "Calle": address_list[0] if len(address_list) > 0 else None,
+                    "Barrio": address_list[1] if len(address_list) > 1 else None,
+                    "Comuna": address_list[2] if len(address_list) > 2 else None,
+                    "Ciudad": address_list[3] if len(address_list) > 3 else None,
+                    "Dirección": ", ".join(address_list)
+                }
     except Exception as e:
         print(f"Error al procesar la ubicación: {e}")
         return {
@@ -131,6 +134,7 @@ def process_location(location):
             "Comuna": None,
             "Ciudad": None,
             "Dirección": None}
+
 
 def process_description(description):
     now = datetime.now()
