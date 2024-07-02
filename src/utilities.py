@@ -1,14 +1,21 @@
-def is_number(text):
+def is_number_array(list):
     try:
-        text = text.replace('.', '')
-        for value in text.split():
+        for value in list.split():
             try:
-                return int(value)
+                return int(value.replace('.', ''))
                 break
             except Exception as e:
-                print(f'No encuentra enteros en el texto {e}')    
+                continue  
     except Exception as e:
-        print(f"Error al procesar el texto: {e}")
+        print(f"Error al procesar la lista: {e}")
+    return None
+
+def is_number(text):
+    for value in text:
+        try:
+            return int(value.replace('.', ''))
+        except ValueError:
+            continue
     return None
 
 def convert_float(value):

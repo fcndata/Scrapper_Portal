@@ -1,5 +1,5 @@
 from datetime import datetime
-from utilities import is_number,convert_float
+from utilities import is_number,is_number_array,convert_float
 
 
 def extract_name(header):
@@ -25,16 +25,17 @@ def extract_value_and_currency(header):
 
 def extract_general_expenses(header):
     try:
-        gastos_comunes=header.find(id="maintenance_fee_vis")
+        gastos_comunes=header.find("div",id="maintenance_fee_vis").text
     except (IndexError, ValueError, AttributeError) as e:
         print(f"Error al extraer los gastos comunes: {e}")
     else:
-        return is_number(gastos_comunes)
+        return is_number_array(gastos_comunes)
     
 def extract_features(header):
     metraje = dormitorio = banos = None
     try:
-        values = header.find_all("div",class_="ui-pdp-highlighted-specs-res__icon-label")
+        all_features=header.find("div", id="highlighted_specs_res")
+        values = all_features.find_all("div",class_="ui-pdp-highlighted-specs-res__icon-label")
     except Exception as e:
         print(f"Error extracting features: {e}")
     else:
@@ -42,10 +43,13 @@ def extract_features(header):
             text = value.find('span').text.split()
             if any(word in text for word in ['total', 'totales']):
                 metraje = is_number(text)
+                
             elif any(word in text for word in ['dormitorio', 'dormitorios']):
                 dormitorio = is_number(text)
+                
             elif any(word in text for word in ['bano', 'banos', 'baño', 'baños']):
-                banos = is_number(text)
+                banos =is_number(text)
+
     return metraje, dormitorio, banos
 
 def process_header(header):
