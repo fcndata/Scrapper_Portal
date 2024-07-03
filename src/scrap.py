@@ -9,5 +9,5 @@ for post_url in urls_to_scrape:
     if processed is not None:
         local_path = get_local_path(processed)
         save_csv(processed, local_path)
-append_scraped_urls(reversed(urls_to_scrape),scrapped_url_path)
+append_scraped_urls(reversed(urls_to_scrape))
 
