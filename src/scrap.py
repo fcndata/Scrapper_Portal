@@ -2,9 +2,9 @@ import requests
 import csv
 from module.module1 import get_urls,append_scraped_urls
 from module.module3 import get_article,get_local_path,save_csv
-from param import final_url,raw_data_path
+from param import new_url_path,raw_data_path
 
-urls_to_scrape = get_urls(final_url)
+urls_to_scrape = get_urls(new_url_path)
 for post_url in urls_to_scrape:
     processed = get_article(post_url)
     if processed is not None:

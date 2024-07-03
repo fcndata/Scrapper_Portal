@@ -6,13 +6,15 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from time import sleep
 from random import choice
-from module.module2 import process_header,process_content,process_description,process_location
+from module.module2 import process_header,process_highlights,process_content,process_description,process_location
 from param import user_agents,fieldnames,raw_data_path
+
 
 def get_article(url):
     max_attempts = 15
     data = {"url": url}
     header_obtained = False
+    highlights_obtained=False
     content_obtained = False
     location_obtained = False
     description_obtained = False
@@ -33,30 +35,38 @@ def get_article(url):
                     header_content=process_header(header)
                     header_obtained = True
                 else:
-                    print(f"Header no encontrado con el header: {headers}")
+                    print(f"process_header not found: {headers}")
+            if not highlights_obtained:
+                highlights=article.find("div", id="highlighted_specs_res")
+                if highlights:
+                    highlights_content=process_highlights(highlights)
+                    highlights_obtained=True
+                else:
+                    print(f"process_highlights not found: {highlights}")    
+
             if not content_obtained:
                 content = article.find_all("tbody", class_="andes-table__body")
                 if content:
                     article_content=process_content(content)
                     content_obtained = True
                 else:
-                    print(f"Content no encontrado con el header: {headers}")
+                    print(f"process_content not found: {headers}")
             if not location_obtained:
                 location = article.find("div", id="location")
                 if location:
                     location_content=process_location(location)
                     location_obtained = True
                 else:
-                    print(f"Location no encontrado con el header: {headers}")
+                    print(f"location_content not found: {headers}")
             if not description_obtained:
                 description = article.find("div", id="description")
                 if description:
                     description_content=process_description(description)
                     description_obtained = True
                 else:
-                    print(f"Description no encontrado con el header: {headers}")
-            if header_obtained and content_obtained and location_obtained and description_obtained:
-                return  {"url": url, **header_content, **article_content, **location_content, **description_content,"user_agent":headers,"intento":attempt }
+                    print(f"description_content not found: {headers}")
+            if header_obtained and highlights_obtained and content_obtained and location_obtained and description_obtained:
+                return  {"url": url, **header_content,**highlights_content, **article_content, **location_content, **description_content,"user_agent":headers,"intento":attempt }
 
             attempt += 1
             sleep(3)

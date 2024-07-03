@@ -34,41 +34,41 @@ def extract_general_expenses(header):
 def extract_features(header):
     metraje = dormitorio = banos = None
     try:
-        all_features=header.find("div", id="highlighted_specs_res")
-        values = all_features.find_all("div",class_="ui-pdp-highlighted-specs-res__icon-label")
+        values = header.find_all("div", class_="ui-pdp-highlighted-specs-res__icon-label")
     except Exception as e:
         print(f"Error extracting features: {e}")
     else:
         for value in values:
-            text = value.find('span').text.split()
+            text = value.find('span', class_="ui-pdp-color--BLACK ui-pdp-size--SMALL ui-pdp-family--REGULAR ui-pdp-label").text.split()
             if any(word in text for word in ['total', 'totales']):
                 metraje = is_number(text)
-                
             elif any(word in text for word in ['dormitorio', 'dormitorios']):
                 dormitorio = is_number(text)
-                
             elif any(word in text for word in ['bano', 'banos', 'baño', 'baños']):
-                banos =is_number(text)
-
+                banos = is_number(text)
     return metraje, dormitorio, banos
+
+
 
 def process_header(header):
     name = extract_name(header)
-    seller = extract_seller(header)
     value, currency = extract_value_and_currency(header)
     general_expenses = extract_general_expenses(header)
-    metraje, dormitorio, banos = extract_features(header)
-
+    seller=extract_seller(header)
     return {
         "Name of the flat": name,
         "Value": value,
         "Currency": currency,
         "General Expenses": general_expenses,
-        "Size of the flat": metraje,
-        "Bedrooms": dormitorio,
-        "Bathrooms": banos,
         "Seller": seller
     }
+def process_highlights(highlights):
+    metraje, dormitorio, banos = extract_features(highlights)
+    return {
+        "Size of the flat": metraje,
+        "Bedrooms": dormitorio,
+        "Bathrooms": banos}
+
 
 def process_content(content):
     fields = {
@@ -88,8 +88,7 @@ def process_content(content):
         "Orientación": ("orientacion", lambda x: x)
     }
 
-    article_content = {      
-    }
+    article_content = {}
 
     for table_work in content:
         result_table = table_work.find_all("tr")
@@ -107,33 +106,34 @@ def process_content(content):
 def process_location(location):
     try:
         p_tag = location.find('p', class_="ui-pdp-color--BLACK ui-pdp-size--SMALL ui-pdp-family--REGULAR ui-pdp-media__title")
-        if p_tag and p_tag.text:
-            address_list = [part.strip() for part in p_tag.text.split(',')]
-            if len(address_list) >= 4:
-                return {
-                    "Calle": address_list[0],
-                    "Barrio": address_list[1],
-                    "Comuna": address_list[2],
-                    "Ciudad": address_list[3],
-                    "Dirección": ", ".join(address_list)
-                }
-            else:
-                print("La lista de direcciones no tiene suficientes elementos.")
-                return {
-                    "Calle": address_list[0] if len(address_list) > 0 else None,
-                    "Barrio": address_list[1] if len(address_list) > 1 else None,
-                    "Comuna": address_list[2] if len(address_list) > 2 else None,
-                    "Ciudad": address_list[3] if len(address_list) > 3 else None,
-                    "Dirección": ", ".join(address_list)
-                }
+        address_list = [part.strip() for part in p_tag.text.split(',')]
+        try:
+            return {
+                "Calle": address_list[0],
+                "Barrio": address_list[1],
+                "Comuna": address_list[2],
+                "Ciudad": address_list[3],
+                "Dirección": ", ".join(address_list)
+            }
+        except IndexError as ie:
+            print(f"Error {ie} en process_location")
+            return {
+                "Calle": address_list[0] if len(address_list) > 0 else None,
+                "Barrio": address_list[1] if len(address_list) > 1 else None,
+                "Comuna": address_list[2] if len(address_list) > 2 else None,
+                "Ciudad": address_list[3] if len(address_list) > 3 else None,
+                "Dirección": ", ".join(address_list) if address_list else None
+            }
     except Exception as e:
-        print(f"Error al procesar la ubicación: {e}")
+        print(f"Error: {e} en process_location")
         return {
             "Calle": None,
             "Barrio": None,
             "Comuna": None,
             "Ciudad": None,
-            "Dirección": None}
+            "Dirección": ", ".join(address_list) if address_list else None
+        }
+
 
 
 def process_description(description):

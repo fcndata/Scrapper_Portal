@@ -6,11 +6,11 @@ fieldnames = [
     "bodegas","piso_unidad", "cant_pisos", "dept_piso", "antiguedad",
     "tipo_depa", "orientacion","Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion","Description"]
 
-file_path = Path("../data/raw/2024/scraped_urls.txt")
-
 raw_data_path="../data/raw"
 
-final_url = [
+scrapped_url_path = Path("/data/raw/2024/scraped_urls.txt")
+
+new_url_path = [
         "https://www.portalinmobiliario.com/venta/departamento/las-condes-metropolitana/_OrderId_BEGINS*DESC"
         #"https://www.portalinmobiliario.com/venta/departamento/vitacura-metropolitana/_OrderId_BEGINS*DESC",
         #"https://www.portalinmobiliario.com/venta/departamento/providencia-metropolitana/_OrderId_BEGINS*DESC"
