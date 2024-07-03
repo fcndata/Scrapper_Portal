@@ -8,7 +8,7 @@ fieldnames = [
 
 raw_data_path="../data/raw"
 
-scrapped_url_path = Path("/data/raw/2024/scraped_urls.txt")
+scrapped_url_path = Path("../data/raw/2024/scraped_urls.txt")
 
 new_url_path = [
         "https://www.portalinmobiliario.com/venta/departamento/las-condes-metropolitana/_OrderId_BEGINS*DESC"
