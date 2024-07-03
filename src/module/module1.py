@@ -17,8 +17,9 @@ def get_scraped_urls(url_path):
             print(f"Error al leer el archivo: {e}")
     return scraped_urls
 
-def append_scraped_urls(urls,url_path):
+def append_scraped_urls(url):
     try:
+        url_path=scrapped_url_path
         with url_path.open("a") as url_file: 
             url_file.writelines(f"{url}\n" for url in urls)
     except FileNotFoundError as fnf_error:
