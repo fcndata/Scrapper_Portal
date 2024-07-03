@@ -12,8 +12,8 @@ scrapped_url_path = Path("/data/raw/2024/scraped_urls.txt")
 
 new_url_path = [
         "https://www.portalinmobiliario.com/venta/departamento/las-condes-metropolitana/_OrderId_BEGINS*DESC"
-        #"https://www.portalinmobiliario.com/venta/departamento/vitacura-metropolitana/_OrderId_BEGINS*DESC",
-        #"https://www.portalinmobiliario.com/venta/departamento/providencia-metropolitana/_OrderId_BEGINS*DESC"
+        "https://www.portalinmobiliario.com/venta/departamento/vitacura-metropolitana/_OrderId_BEGINS*DESC",
+        "https://www.portalinmobiliario.com/venta/departamento/providencia-metropolitana/_OrderId_BEGINS*DESC"
         ]
 
 user_agents = [
