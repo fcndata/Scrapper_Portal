@@ -2,7 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 from time import time
-from param import scrapped_url_path,new_url_path
+from param import scrapped_url_path
 from typing import List
 from pathlib import Path
 
@@ -17,10 +17,9 @@ def get_scraped_urls(url_path):
             print(f"Error al leer el archivo: {e}")
     return scraped_urls
 
-def append_scraped_urls(url):
+def append_scraped_urls(urls):
     try:
-        url_path=scrapped_url_path
-        with url_path.open("a") as url_file: 
+        with scrapped_url_path.open("a") as url_file: 
             url_file.writelines(f"{url}\n" for url in urls)
     except FileNotFoundError as fnf_error:
         print(f"Error: el archivo no se encontró. Detalles: {fnf_error}")
@@ -37,10 +36,10 @@ def request_url(url: str):
     results_lists = soup.find_all("ol", {"class": "ui-search-layout ui-search-layout--grid"})  # cambio div por ol
     return results_lists
 
-def get_urls(final_url: List[str]):
+def get_urls(new_url_path):
     all_hrefs = set()
-    for url in final_url:
-        max_retries = len(final_url)
+    for url in new_url_path:
+        max_retries = len(new_url_path)
         retry_delay = 1  # segundos
         for attempt in range(max_retries):
             try:
