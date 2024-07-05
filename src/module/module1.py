@@ -2,32 +2,27 @@
 import requests
 from bs4 import BeautifulSoup
 from time import time
-from param import scrapped_url_path
+from param import scrapped_url_path,new_url_path
 from typing import List
 from pathlib import Path
 
 
-def get_scraped_urls(url_path):
-    scraped_urls = []
+def get_scraped_urls():
+    url_path=scrapped_url_path
+    scraped_urls = []  # Raw_Data
     if url_path.exists():
         try:
             with url_path.open() as url_file:
                 scraped_urls = [line.strip() for line in url_file]
         except Exception as e:
             print(f"Error al leer el archivo: {e}")
+    else:
+        try:
+            url_path.touch()
+            print(f"Archivo creado: {url_path}")
+        except Exception as e:
+            print(f"Error al crear el archivo: {e}")
     return scraped_urls
-
-def append_scraped_urls(urls):
-    try:
-        with scrapped_url_path.open("a") as url_file: 
-            url_file.writelines(f"{url}\n" for url in urls)
-    except FileNotFoundError as fnf_error:
-        print(f"Error: el archivo no se encontró. Detalles: {fnf_error}")
-    except IOError as io_error:
-        print(f"Error de entrada/salida al escribir en el archivo. Detalles: {io_error}")
-    except Exception as e:
-        print(f"Ocurrió un error inesperado: {e}")
-
 
 def request_url(url: str):
     response = requests.get(url, timeout=10)
@@ -36,10 +31,11 @@ def request_url(url: str):
     results_lists = soup.find_all("ol", {"class": "ui-search-layout ui-search-layout--grid"})  # cambio div por ol
     return results_lists
 
-def get_urls(new_url_path):
+def get_urls():
+    url_path=new_url_path
     all_hrefs = set()
-    for url in new_url_path:
-        max_retries = len(new_url_path)
+    for url in url_path:
+        max_retries = len(url_path)
         retry_delay = 1  # segundos
         for attempt in range(max_retries):
             try:
@@ -66,4 +62,20 @@ def get_urls(new_url_path):
 
     return list(all_hrefs)
 
+def get_urls_to_scrape():
+    existing_urls = set(get_scraped_urls())
+    all_urls = get_urls()
+    urls_to_scrape = [url for url in all_urls if url not in existing_urls]
+    return urls_to_scrape
 
+def append_scraped_urls(urls):
+    url_path=scrapped_url_path
+    try:
+        with url_path.open("a") as url_file: 
+            url_file.writelines(f"{url}\n" for url in urls)
+    except FileNotFoundError as fnf_error:
+        print(f"Error: el archivo no se encontró. Detalles: {fnf_error}")
+    except IOError as io_error:
+        print(f"Error de entrada/salida al escribir en el archivo. Detalles: {io_error}")
+    except Exception as e:
+        print(f"Ocurrió un error inesperado: {e}")

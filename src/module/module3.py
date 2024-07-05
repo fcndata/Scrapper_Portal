@@ -14,7 +14,7 @@ def get_article(url):
     max_attempts = 15
     data = {"url": url}
     header_obtained = False
-    highlights_obtained=False
+    highlights_obtained = False
     content_obtained = False
     location_obtained = False
     description_obtained = False
@@ -81,7 +81,7 @@ def get_article(url):
     return None
 
 def get_local_path(processed_article):
-    base_path = Path(raw_data_path)
+    base_path = raw_data_path
     pub_date = datetime.fromisoformat(processed_article["Fecha_Publicacion"])
     year_folder = pub_date.strftime("%Y")
     file_name = f"{pub_date.strftime('%Y%m')}.csv"
@@ -90,11 +90,15 @@ def get_local_path(processed_article):
 
     return full_path / file_name
 
-def save_csv(processed_article, local_path):
-    local_path.parent.mkdir(parents=True, exist_ok=True)
-    file_exists = local_path.is_file()
-    with local_path.open("a", newline='', encoding="utf8") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        if not file_exists:
-            writer.writeheader()
-        writer.writerow({field: processed_article.get(field, "") for field in fieldnames})
+def save_csv(processed_article, local_path,saved_field):
+    try:
+        local_path.parent.mkdir(parents=True, exist_ok=True)
+        file_exists = local_path.is_file()
+        with local_path.open("a", newline='', encoding="utf8") as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=saved_field)
+            if not file_exists:
+                writer.writeheader()
+            writer.writerow({field: processed_article.get(field, "") for field in saved_field})
+    except Exception as e:
+        print(f'Error {e} en save_csv')
+
