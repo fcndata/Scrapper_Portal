@@ -5,7 +5,7 @@
     "editor.wordWrap": "on",
     "editor.formatOnSave": true,
     // Python specific settings
-    "python.pythonPath": "${workspaceFolder}/environment/Scripts/python.exe",
+    #"python.pythonPath": "${workspaceFolder}/environment/Scripts/python.exe",
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
     "python.linting.flake8Enabled": false,
@@ -15,7 +15,7 @@
     // Terminal settings
     "terminal.integrated.shell.windows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
     "terminal.integrated.env.windows": {
-        "PYTHONPATH": "${workspaceFolder}/src/module;${workspaceFolder}/src"
+        "PYTHONPATH": "${workspaceFolder}/src/module;${workspaceFolder}/src;${workspaceFolder}"
     },
     // Files and folders
     "files.exclude": {
