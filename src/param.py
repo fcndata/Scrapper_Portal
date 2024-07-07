@@ -6,9 +6,13 @@ fieldnames = [
     "bodegas","piso_unidad", "cant_pisos", "dept_piso", "antiguedad",
     "tipo_depa", "orientacion","Calle", "Barrio", "Comuna", "Ciudad", "Dirección", "Fecha_Publicacion","Description"]
 
-raw_data_path=Path("../data/raw")
 
-scrapped_url_path = Path("../data/raw/scraped_urls.txt")
+
+base_path = Path(__file__).resolve().parent.parent
+
+# Definir rutas relativas basadas en base_path
+raw_data_path = base_path / "data/raw"
+scrapped_url_path = raw_data_path / "scraped_urls.txt"
 
 
 new_url_path = [
