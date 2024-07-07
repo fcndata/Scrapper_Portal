@@ -23,7 +23,7 @@ jobs:
       - name: Data directory exist & execute script 
         run: |
           mkdir -p data
-          python scrapper_gpt_copilot.py
+          #python scrapper_gpt_copilot.py
       - name: Commit changes
         run: |
           git config --global user.email "facu_mt@hotmail.com"
