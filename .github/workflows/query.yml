@@ -1,8 +1,8 @@
 name: Daily Workflow 
 
 on:
-  schedule:
-    - cron: "0 */3 * * *" # Ejecutar cada 3 horas
+  #schedule:
+    #- cron: "0 */3 * * *" # Ejecutar cada 3 horas
   workflow_dispatch:
 jobs:
   scrape_and_commit:
@@ -23,7 +23,7 @@ jobs:
       - name: Data directory exist & execute script 
         run: |
           mkdir -p data
-          #python scrapper_gpt_copilot.py
+          python scrapper_gpt_copilot.py
       - name: Commit changes
         run: |
           git config --global user.email "facu_mt@hotmail.com"
