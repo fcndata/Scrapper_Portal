@@ -23,12 +23,6 @@ def map_housing(value):
             return categoria
     return str('review_'+value)
 
-def extract_flat_id(url):
-    match = re.search(r"(MLC-\d+)", url)
-    if match:
-        return match.group(1)
-    return np.nan
-
 def calculate_quality_rate(row, columns=rating_columns):
     total_columns = len(columns)
     non_nan_count = row[columns].notna().sum()
