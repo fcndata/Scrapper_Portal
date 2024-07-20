@@ -22,19 +22,15 @@ def create_db():
 def fill_process_db(data):
     conn = sqlite3.connect(db_file_path)
     
-    # Guardar datos en la tabla 'processed'
     data.to_sql('processed', conn, if_exists='append', index=False)
     
-    # Cerrar la conexión
     conn.close()
 
 def fill_raw_db(data):
     conn = sqlite3.connect(db_file_path)
     
-    # Guardar datos en la tabla 'raw'
     data.to_sql('raw', conn, if_exists='append', index=False)
     
-    # Cerrar la conexión
     conn.close()
 
 if __name__ == "__main__":
