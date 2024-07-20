@@ -1,5 +1,5 @@
 import sqlite3
-import os
+import pandas as pd
 from data.param_db import raw_col, process_col, db_file_path
 
 def create_db():
@@ -36,17 +36,24 @@ def fill_raw_db(data):
     conn.commit()
     conn.close()
 
-
+def collect_raw_db():
+    conn = sqlite3.connect('data/db.db')
+    query = "SELECT * FROM raw"
+    df = pd.read_sql_query(query, conn)
+    conn.close()
+    return df
 
 def fill_process_db(data):
     conn = sqlite3.connect(db_file_path)
-    
-    data.to_sql('processed', conn, if_exists='append', index=False)
-    
+    if isinstance(data, pd.DataFrame):
+    # Conectar a la base de datos SQLite
+        # Reemplazar espacios en los nombres de las columnas
+        data.columns = [col.replace(' ', '_') for col in data.columns]
+        # Insertar DataFrame en la tabla 'processed'
+        data.to_sql('processed', conn, if_exists='append', index=False)
+    # Cerrar la conexión
+    conn.commit()
     conn.close()
-
-
-
-
+    
 if __name__ == "__main__":
     create_db()
