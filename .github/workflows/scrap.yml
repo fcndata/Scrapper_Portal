@@ -28,14 +28,12 @@ jobs:
       - name: Path settings
         run: |
           export PYTHONPATH="
-          ${{ github.workspace }}:
-          ${{ github.workspace }}/src:
-          ${{ github.workspace }}/src/module
-         "
-
+              ${{ github.workspace }}:
+              ${{ github.workspace }}/src:
+              ${{ github.workspace }}/data"
       - name: Data directory exist & execute script 
         run: |
-          mkdir -p data/raw/2024
+          #mkdir -p data/raw/2024
           python src/scrap.py
 
       - name: Commit changes
