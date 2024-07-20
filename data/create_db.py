@@ -26,7 +26,8 @@ def fill_process_db(data):
     
     conn.close()
 
-def fill_raw_db(data):
+def fill_raw_db(data_dic):
+    data=pd.dataframe
     conn = sqlite3.connect(db_file_path)
     
     data.to_sql('raw', conn, if_exists='append', index=False)
