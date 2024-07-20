@@ -27,7 +27,11 @@ jobs:
           
       - name: Path settings
         run: |
-          export PYTHONPATH="${{ github.workspace }}/src/module:${{ github.workspace }}/src:${{ github.workspace }}"
+          export PYTHONPATH="
+          ${{ github.workspace }}:
+          ${{ github.workspace }}/src:
+          ${{ github.workspace }}/src/module
+         "
 
       - name: Data directory exist & execute script 
         run: |
