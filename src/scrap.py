@@ -5,8 +5,6 @@ from module import get_urls_to_scrape,append_scraped_urls
 from module import get_article,get_local_path,save_csv 
 from module import fieldnames
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 urls_to_scrape = get_urls_to_scrape()
 for post_url in urls_to_scrape:
     processed = get_article(post_url)

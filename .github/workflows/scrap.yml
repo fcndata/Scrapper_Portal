@@ -24,16 +24,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
-      - name: Set PYTHONPATH and execute script
+
+      - name: Set PYTHONPATH
         env:
-          PYTHONPATH: "${{ github.workspace }}/src:${{ github.workspace }}"
+          PYTHONPATH: "${{ github.workspace }}/src:${{ github.workspace }}:${{ github.workspace }}/data"
         run: |
-          export PYTHONPATH="
-              ${{ github.workspace }}:
-              ${{ github.workspace }}/src:
-              ${{ github.workspace }}/data"
-        
+          export PYTHONPATH="${{ github.workspace }}:${{ github.workspace }}/src:${{ github.workspace }}/data"
+
       - name: Execute script 
         run: |
           python src/scrap.py
