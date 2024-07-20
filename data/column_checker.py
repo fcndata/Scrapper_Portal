@@ -5,7 +5,7 @@ def check_table_columns():
     conn = sqlite3.connect(db_file_path)
     cursor = conn.cursor()
     
-    # Consulta para obtener información de las columnas de la tabla 'raw'
+    # Consulta para obtener información de las columnas de la tabla 
     cursor.execute("PRAGMA table_info(raw)")
     columns = cursor.fetchall()
     

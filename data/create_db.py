@@ -6,7 +6,9 @@ def create_db():
     # Crear la declaración SQL para la creación de las tablas
     create_raw_table = f"CREATE TABLE IF NOT EXISTS raw ({', '.join([f'{col} {dtype}' for col, dtype in raw_col.items()])})"
     create_processed_table = f"CREATE TABLE IF NOT EXISTS processed ({', '.join([f'{col} {dtype}' for col, dtype in process_col.items()])})"
-    
+    create_urls_scraped = "CREATE TABLE IF NOT EXISTS url (url TEXT)"
+
+
     # Conectar a la base de datos SQLite (o crearla)
     conn = sqlite3.connect(db_file_path)
     cursor = conn.cursor()
@@ -14,7 +16,7 @@ def create_db():
     # Crear tablas
     cursor.execute(create_raw_table)
     cursor.execute(create_processed_table)
-    
+    cursor.execute(create_urls_scraped)
     # Confirmar cambios y cerrar la conexión
     conn.commit()
     conn.close()
@@ -37,7 +39,7 @@ def fill_raw_db(data):
     conn.close()
 
 def collect_raw_db():
-    conn = sqlite3.connect('data/db.db')
+    conn = sqlite3.connect(db_file_path)
     query = "SELECT * FROM raw"
     df = pd.read_sql_query(query, conn)
     conn.close()
@@ -52,6 +54,25 @@ def fill_process_db(data):
         # Insertar DataFrame en la tabla 'processed'
         data.to_sql('processed', conn, if_exists='append', index=False)
     # Cerrar la conexión
+    conn.commit()
+    conn.close()
+
+def collect_urls_db():
+    conn = sqlite3.connect(db_file_path)
+    query = "SELECT DISTINCT url FROM urls"
+    df = pd.read_sql_query(query, conn)
+    conn.close()
+    url_list = df['url'].tolist()
+    return url_list
+
+def fill_urls_db(data):
+    conn = sqlite3.connect(db_file_path)
+    cursor = conn.cursor()
+    
+    if isinstance(data, list):
+        for url in data:
+            cursor.execute("INSERT INTO urls (url) VALUES (?)", (url,))
+    
     conn.commit()
     conn.close()
     
