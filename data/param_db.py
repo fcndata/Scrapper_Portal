@@ -1,23 +1,69 @@
 import os
-
-
 # Definir la ruta base
 os.path.join(os.path.dirname(os.path.abspath(__file__)), 'db.db')
 
 raw_col = {
-    "flat_id": "TEXT",
-    "quality_rate": "REAL",
+    "url": "TEXT",
+    "Name of the flat": "TEXT",
+    "Value": "INTEGER",
+    "Currency": "TEXT",
+    "General Expenses": "REAL",
+    "Size of the flat": "REAL",
+    "Bedrooms": "REAL",
+    "Bathrooms": "REAL",
+    "Seller": "TEXT",
+    "metraje": "REAL",
+    "sup_terraza": "REAL",
+    "sup_util": "REAL",
+    "ambientes": "REAL",
+    "dormitorios": "REAL",
+    "banos": "REAL",
+    "estacionamiento": "REAL",
+    "bodegas": "REAL",
+    "piso_unidad": "REAL",
+    "cant_pisos": "REAL",
+    "dept_piso": "REAL",
+    "antiguedad": "REAL",
+    "tipo_depa": "TEXT",
     "orientacion": "TEXT",
-    "map_depa": "TEXT",
-    "antiguedad": "INTEGER",
-    "source": "TEXT"
+    "Calle": "TEXT",
+    "Barrio": "TEXT",
+    "Comuna": "TEXT",
+    "Ciudad": "TEXT",
+    "Dirección": "TEXT",
+    "Fecha_Publicacion": "TEXT",
+    "Description": "TEXT"
 }
 
 process_col = {
-    "flat_id": "TEXT",
-    "quality_rate": "REAL",
+    "url": "TEXT",
+    "id_name": "TEXT",
+    "valor": "INTEGER",
+    "moneda": "TEXT",
+    "gastos_comunes": "REAL",
+    "sup_total": "REAL",
+    "sup_terraza": "REAL",
+    "sup_util": "REAL",
+    "dormitorios": "REAL",
+    "banos": "REAL",
+    "estacionamiento": "REAL",
+    "bodega": "REAL",
+    "ambientes": "REAL",
+    "piso_unidad": "REAL",
+    "tot_pisos": "REAL",
+    "dept_x_piso": "REAL",
+    "antiguedad": "REAL",
+    "tipo_depa": "TEXT",
     "orientacion": "TEXT",
-    "map_depa": "TEXT",
-    "antiguedad": "INTEGER",
-    "source": "TEXT"
+    "vendedor": "TEXT",
+    "calle": "TEXT",
+    "barrio": "TEXT",
+    "comuna": "TEXT",
+    "ciudad": "TEXT",
+    "direccion": "TEXT",
+    "fecha_scrap": "TEXT",
+    "descripcion": "TEXT",
+    "id_publicacion": "TEXT",
+    "quality_scrap": "REAL"
 }
+

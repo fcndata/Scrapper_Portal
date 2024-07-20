@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from pathlib import Path
-from preprocess import map_orientation,map_housing,calculate_quality_rate
+from preprocess import map_orientation,map_housing,calculate_quality_rate,process_df
 from preprocess import update_missing_pairs,update_surface_areas,update_antiguedad
 def main_preprocess():
     base_path = Path(__file__).resolve().parent.parent
@@ -23,10 +23,11 @@ def main_preprocess():
     data = update_missing_pairs(data)
     data = update_surface_areas(data)
     data['antiguedad'] = data.apply(update_antiguedad, axis=1)
-    data['quality_rate'] = data.apply(calculate_quality_rate, axis=1) 
+    data['quality_rate'] = data.apply(calculate_quality_rate, axis=1)
+    data=process_df(data)
     
     # Seleccionar la fila con el máximo quality_rate por flat_id
-    data = data.loc[data.groupby('Name of the flat')['quality_rate'].idxmax()]
+    data = data.loc[data.groupby('id_name')['quality_scrap'].idxmax()]
     
     # Guardar datos procesados
     data.to_csv(output_file_path, index=False)

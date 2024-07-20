@@ -41,3 +41,38 @@ rating_columns = [
     'estacionamiento', 'bodegas', 'piso_unidad', 'cant_pisos', 'dept_piso',
     'antiguedad', 'tipo_depa', 'orientacion'
 ]
+
+
+name_mapping={
+'url':'url', 
+'Name of the flat':'id_name', 
+'Value':'valor', 'Currency':'moneda', 
+'General Expenses':'gastos_comunes',
+'Size of the flat':'metraje',
+'Bedrooms':'habitacion', 
+'Bathrooms':'bano', 
+'Seller':'vendedor', 
+'metraje':'sup_total',
+'sup_terraza':'sup_terraza',
+'sup_util':'sup_util', 
+'ambientes':'ambientes', 
+'dormitorios': 'dormitorios', 
+'banos':'banos',
+'estacionamiento':'estacionamiento', 
+'bodegas':'bodega', 
+'piso_unidad':'piso_unidad', 
+'cant_pisos':'tot_pisos', 
+'dept_piso':'dept_x_piso',
+'antiguedad':'antiguedad', 
+'tipo_depa':'tipo_depa', 
+'orientacion':'orientacion', 
+'Calle':'calle', 
+'Barrio':'barrio', 
+'Comuna':'comuna',
+'Ciudad':'ciudad', 
+'Dirección':'direccion', 
+'Fecha_Publicacion':'fecha_scrap', 
+'Description':'descripcion',
+'flat_id':'id_publicacion', 
+'quality_rate':'quality_scrap'
+}

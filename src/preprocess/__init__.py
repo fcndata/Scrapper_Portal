@@ -1,4 +1,4 @@
-from .data_cleaning import update_missing_pairs,update_surface_areas,update_antiguedad,map_orientation,map_housing,calculate_quality_rate
-from .param_pre import rating_columns,housing_types,orientation_types
+from .data_cleaning import update_missing_pairs,update_surface_areas,update_antiguedad,map_orientation,map_housing,calculate_quality_rate,process_df
+from .param_pre import rating_columns,housing_types,orientation_types,name_mapping
 
 
