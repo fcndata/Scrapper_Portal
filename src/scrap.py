@@ -1,9 +1,9 @@
 import requests
 import csv
 from data import fill_raw_db
-from module.module1 import get_urls_to_scrape,append_scraped_urls
-from module.module3 import get_article,get_local_path,save_csv
-from param import fieldnames
+from module import get_urls_to_scrape,append_scraped_urls
+from module import get_article,get_local_path,save_csv 
+from module import fieldnames 
 
 urls_to_scrape = get_urls_to_scrape()
 for post_url in urls_to_scrape:
