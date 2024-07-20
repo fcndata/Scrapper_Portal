@@ -1,6 +1,6 @@
 import os
 # Definir la ruta base
-os.path.join(os.path.dirname(os.path.abspath(__file__)), 'db.db')
+db_file_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'db.db')
 
 raw_col = {
     "url": "TEXT",
