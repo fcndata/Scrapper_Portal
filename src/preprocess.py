@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 from preprocess import map_orientation,map_housing,calculate_quality_rate,process_df
 from preprocess import update_missing_pairs,update_surface_areas,update_antiguedad
+from data.create_db import fill_process_db
+
 def main_preprocess():
     base_path = Path(__file__).resolve().parent.parent
     input_file_path = os.path.join(base_path, 'data/raw/2024/202407.csv')
@@ -29,7 +31,8 @@ def main_preprocess():
     # Seleccionar la fila con el máximo quality_rate por flat_id
     data = data.loc[data.groupby('id_name')['quality_scrap'].idxmax()]
     
-    # Guardar datos procesados
-    data.to_csv(output_file_path, index=False)
+    # Guardar datos en CSV y DB procesados
+    data.to_csv(output_file_path, index=False) # Debo eliminarlo
+    fill_process_db(data)
 if __name__ == "__main__":
     main_preprocess()
