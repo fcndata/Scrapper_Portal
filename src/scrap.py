@@ -1,6 +1,6 @@
 import sys
 import os
-from data import fill_raw_db
+from data.create_db import fill_raw_db
 from module import get_urls_to_scrape,append_scraped_urls
 from module import get_article,get_local_path,save_csv 
 from module import fieldnames
