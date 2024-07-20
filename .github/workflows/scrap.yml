@@ -26,11 +26,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Set PYTHONPATH
-        env:
-          PYTHONPATH: "${{ github.workspace }}/src:${{ github.workspace }}:${{ github.workspace }}/data"
         run: |
-          export PYTHONPATH="${{ github.workspace }}:${{ github.workspace }}/src:${{ github.workspace }}/data"
-
+          echo "PYTHONPATH=${GITHUB_WORKSPACE}/src:${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE}/data" >> $GITHUB_ENV
+  
       - name: Execute script 
         run: |
           python src/scrap.py
