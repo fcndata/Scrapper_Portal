@@ -24,17 +24,18 @@ def fill_raw_db(data):
     cursor = conn.cursor()
     
     if isinstance(data, dict):
-        # Reemplazar None con NULL (valor adecuado para SQL)
-        sanitized_data = {key.replace(' ', '_'): (value if value is not None else None) for key, value in data.items()}
+        # Reemplazar None con NULL y manejar nombres de columnas con espacios
+        sanitized_data = {key.replace(' ', '_'): (value if value is not None else None) for key, value in data.items() if key in raw_col.keys()}
         
         # Obtener los nombres de las columnas y los valores
-        columns = ', '.join([f'"{key}"' for key in sanitized_data.keys()])
+        columns = ', '.join(sanitized_data.keys())
         placeholders = ', '.join(['?' for _ in sanitized_data])
         sql = f'INSERT INTO raw ({columns}) VALUES ({placeholders})'
         cursor.execute(sql, list(sanitized_data.values()))
     
     conn.commit()
     conn.close()
+
 
 
 def fill_process_db(data):
