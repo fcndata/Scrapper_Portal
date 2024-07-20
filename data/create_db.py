@@ -43,5 +43,6 @@ def fill_raw_db(data):
     conn.commit()
     conn.close()
 
+
 if __name__ == "__main__":
     create_db()
