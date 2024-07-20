@@ -30,12 +30,15 @@ def fill_raw_db(data):
     conn = sqlite3.connect(db_file_path)
     cursor = conn.cursor()
     
-    # Verificar que data es un diccionario
     if isinstance(data, dict):
-        columns = ', '.join(data.keys())
-        placeholders = ', '.join(['?'] * len(data))
-        sql = f"INSERT INTO raw ({columns}) VALUES ({placeholders})"
-        cursor.execute(sql, list(data.values()))
+        # Reemplazar None con NULL (valor adecuado para SQL)
+        sanitized_data = {key: (value if value is not None else None) for key, value in data.items()}
+        
+        # Obtener los nombres de las columnas y los valores
+        columns = ', '.join([f'"{key}"' for key in sanitized_data.keys()])
+        placeholders = ', '.join(['?' for _ in sanitized_data])
+        sql = f'INSERT INTO raw ({columns}) VALUES ({placeholders})'
+        cursor.execute(sql, list(sanitized_data.values()))
     
     conn.commit()
     conn.close()
