@@ -26,12 +26,18 @@ def fill_process_db(data):
     
     conn.close()
 
-def fill_raw_db(data_dic):
-    data=pd.dataframe
+def fill_raw_db(data):
     conn = sqlite3.connect(db_file_path)
+    cursor = conn.cursor()
     
-    data.to_sql('raw', conn, if_exists='append', index=False)
+    # Verificar que data es un diccionario
+    if isinstance(data, dict):
+        columns = ', '.join(data.keys())
+        placeholders = ', '.join(['?'] * len(data))
+        sql = f"INSERT INTO raw ({columns}) VALUES ({placeholders})"
+        cursor.execute(sql, list(data.values()))
     
+    conn.commit()
     conn.close()
 
 if __name__ == "__main__":

@@ -9,7 +9,6 @@ urls_to_scrape = get_urls_to_scrape()
 for post_url in urls_to_scrape:
     processed = get_article(post_url)
     if processed is not None:
-        print(f"The type of 'processed' is: {type(processed)}") 
         fill_raw_db(processed) # SQL
         local_path = get_local_path(processed) #CSV
         save_csv(processed, local_path,fieldnames)#CSV
