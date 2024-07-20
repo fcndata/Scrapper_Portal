@@ -24,6 +24,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          
+      - name: Path settings
+        run: |
+          export PYTHONPATH="${{ github.workspace }}/src/module:${{ github.workspace }}/src:${{ github.workspace }}"
 
       - name: Data directory exist & execute script 
         run: |
