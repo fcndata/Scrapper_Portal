@@ -19,11 +19,11 @@ def main_preprocess():
     
     # Aplicar funciones de preprocesamiento
     data['orientacion'] = data['orientacion'].map(map_orientation)
-    data['map_depa'] = data['tipo_depa'].map(map_housing)
+    data['tipo_depa'] = data['tipo_depa'].map(map_housing)
     data = update_missing_pairs(data)
     data = update_surface_areas(data)
     data['antiguedad'] = data.apply(update_antiguedad, axis=1)
-    data['quality_rate'] = data.apply(calculate_quality_rate, axis=1)  # tal vez salte error porque no me traje a column
+    data['quality_rate'] = data.apply(calculate_quality_rate, axis=1) 
     
     # Seleccionar la fila con el máximo quality_rate por flat_id
     data = data.loc[data.groupby('Name of the flat')['quality_rate'].idxmax()]
