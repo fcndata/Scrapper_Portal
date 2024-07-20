@@ -4,11 +4,11 @@ db_file_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'db.db')
 
 raw_col = {
     "url": "TEXT",
-    "Name of the flat": "TEXT",
+    "Name_of_the_flat": "TEXT",
     "Value": "INTEGER",
     "Currency": "TEXT",
-    "General Expenses": "REAL",
-    "Size of the flat": "REAL",
+    "General_Expenses": "REAL",
+    "Size_of_the_flat": "REAL",
     "Bedrooms": "REAL",
     "Bathrooms": "REAL",
     "Seller": "TEXT",

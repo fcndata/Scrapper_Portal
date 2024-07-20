@@ -19,20 +19,13 @@ def create_db():
     conn.commit()
     conn.close()
 
-def fill_process_db(data):
-    conn = sqlite3.connect(db_file_path)
-    
-    data.to_sql('processed', conn, if_exists='append', index=False)
-    
-    conn.close()
-
 def fill_raw_db(data):
     conn = sqlite3.connect(db_file_path)
     cursor = conn.cursor()
     
     if isinstance(data, dict):
         # Reemplazar None con NULL (valor adecuado para SQL)
-        sanitized_data = {key: (value if value is not None else None) for key, value in data.items()}
+        sanitized_data = {key.replace(' ', '_'): (value if value is not None else None) for key, value in data.items()}
         
         # Obtener los nombres de las columnas y los valores
         columns = ', '.join([f'"{key}"' for key in sanitized_data.keys()])
@@ -42,6 +35,16 @@ def fill_raw_db(data):
     
     conn.commit()
     conn.close()
+
+
+def fill_process_db(data):
+    conn = sqlite3.connect(db_file_path)
+    
+    data.to_sql('processed', conn, if_exists='append', index=False)
+    
+    conn.close()
+
+
 
 
 if __name__ == "__main__":
