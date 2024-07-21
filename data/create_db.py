@@ -8,7 +8,6 @@ def create_db():
     create_processed_table = f"CREATE TABLE IF NOT EXISTS processed ({', '.join([f'{col} {dtype}' for col, dtype in process_col.items()])})"
     create_urls_scraped = "CREATE TABLE IF NOT EXISTS url (url TEXT)"
 
-
     # Conectar a la base de datos SQLite (o crearla)
     conn = sqlite3.connect(db_file_path)
     cursor = conn.cursor()
@@ -59,7 +58,7 @@ def fill_process_db(data):
 
 def collect_urls_db():
     conn = sqlite3.connect(db_file_path)
-    query = "SELECT DISTINCT url FROM urls"
+    query = "SELECT DISTINCT url FROM url"
     df = pd.read_sql_query(query, conn)
     conn.close()
     url_list = df['url'].tolist()
@@ -71,8 +70,7 @@ def fill_urls_db(data):
     
     if isinstance(data, list):
         for url in data:
-            cursor.execute("INSERT INTO urls (url) VALUES (?)", (url,))
-    
+            cursor.execute("INSERT INTO url (url) VALUES (?)", (url,))
     conn.commit()
     conn.close()
     
