@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from time import time,sleep
 from random import choice
 from param import new_url_path,user_agents
-from data import collect_scraped_urls
+from data import collect_urls_db
 from module import process_header,process_highlights,process_content,process_description,process_location
 
 def request_url(url: str):
@@ -45,7 +45,7 @@ def get_urls():
     return list(all_hrefs)
 
 def get_urls_to_scrape():
-    existing_urls = collect_scraped_urls()
+    existing_urls = collect_urls_db()
     all_urls = get_urls()
     urls_to_scrape = [url for url in all_urls if url not in existing_urls]
     return urls_to_scrape
@@ -119,3 +119,4 @@ def get_article(url):
 
     print("No se pudo obtener la información después de varios intentos.")
     return None
+

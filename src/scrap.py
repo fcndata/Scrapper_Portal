@@ -1,7 +1,7 @@
 import sys
 import os
 from data import fill_raw_db,fill_urls_db
-from module import get_urls_to_scrape,append_scraped_urls
+from module import get_urls_to_scrape,append_scraped_urls,get_urls_to_scrape_csv
 from module import get_article,get_local_path,save_csv 
 from module import fieldnames
 
@@ -15,7 +15,7 @@ def scrap_to_db():
 
 
 def scrap_to_csv():
-    urls_to_scrape = get_urls_to_scrape()
+    urls_to_scrape = get_urls_to_scrape_csv()
     for post_url in urls_to_scrape:
         processed = get_article(post_url)
         if processed is not None:    
@@ -26,3 +26,6 @@ def scrap_to_csv():
 
 if __name__ == "__main__":
     scrap_to_db()
+
+
+    

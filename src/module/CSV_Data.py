@@ -43,7 +43,7 @@ def save_csv(processed_article, local_path,saved_field): #CSV Data.
     except Exception as e:
         print(f'Error {e} en save_csv')
 
-def get_urls_to_scrape():
+def get_urls_to_scrape_csv():
     existing_urls = set(get_scraped_urls()) 
     all_urls = get_urls()
     urls_to_scrape = [url for url in all_urls if url not in existing_urls]
