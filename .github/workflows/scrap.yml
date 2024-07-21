@@ -31,7 +31,8 @@ jobs:
   
       - name: Execute script 
         run: |
-          python src/scrap.py
+          python scrap.py
+          python preprocess.py
 
       - name: Commit changes
         run: |

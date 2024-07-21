@@ -1,7 +1,6 @@
 from datetime import datetime
 from utilities import is_number,is_number_array,convert_float
 
-
 def extract_name(header):
     return header.find(id="header").h1.text
 
@@ -48,8 +47,6 @@ def extract_features(header):
                 banos = is_number(text)
     return metraje, dormitorio, banos
 
-
-
 def process_header(header):
     name = extract_name(header)
     value, currency = extract_value_and_currency(header)
@@ -62,13 +59,13 @@ def process_header(header):
         "General Expenses": general_expenses,
         "Seller": seller
     }
+
 def process_highlights(highlights):
     metraje, dormitorio, banos = extract_features(highlights)
     return {
         "Size of the flat": metraje,
         "Bedrooms": dormitorio,
         "Bathrooms": banos}
-
 
 def process_content(content):
     fields = {
@@ -133,8 +130,6 @@ def process_location(location):
             "Ciudad": None,
             "Dirección": ", ".join(address_list) if address_list else None
         }
-
-
 
 def process_description(description):
     now = datetime.now()

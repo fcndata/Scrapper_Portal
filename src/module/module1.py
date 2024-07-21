@@ -1,34 +1,16 @@
-#module files
 import requests
 from bs4 import BeautifulSoup
-from time import time
-from param import scrapped_url_path,new_url_path
-from typing import List
-from pathlib import Path
-
-
-def get_scraped_urls():
-    url_path=scrapped_url_path
-    scraped_urls = []  # Raw_Data
-    if url_path.exists():
-        try:
-            with url_path.open() as url_file:
-                scraped_urls = [line.strip() for line in url_file]
-        except Exception as e:
-            print(f"Error al leer el archivo: {e}")
-    else:
-        try:
-            url_path.touch()
-            print(f"Archivo creado: {url_path}")
-        except Exception as e:
-            print(f"Error al crear el archivo: {e}")
-    return scraped_urls
+from time import time,sleep,datetime
+from random import choice
+from param import new_url_path,user_agents
+from data import collect_scraped_urls
+from module import process_header,process_highlights,process_content,process_description,process_location
 
 def request_url(url: str):
     response = requests.get(url, timeout=10)
     response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
-    results_lists = soup.find_all("ol", {"class": "ui-search-layout ui-search-layout--grid"})  # cambio div por ol
+    results_lists = soup.find_all("ol", {"class": "ui-search-layout ui-search-layout--grid"})
     return results_lists
 
 def get_urls():
@@ -63,19 +45,77 @@ def get_urls():
     return list(all_hrefs)
 
 def get_urls_to_scrape():
-    existing_urls = set(get_scraped_urls())
+    existing_urls = collect_scraped_urls()
     all_urls = get_urls()
     urls_to_scrape = [url for url in all_urls if url not in existing_urls]
     return urls_to_scrape
 
-def append_scraped_urls(urls):
-    url_path=scrapped_url_path
-    try:
-        with url_path.open("a") as url_file: 
-            url_file.writelines(f"{url}\n" for url in urls)
-    except FileNotFoundError as fnf_error:
-        print(f"Error: el archivo no se encontró. Detalles: {fnf_error}")
-    except IOError as io_error:
-        print(f"Error de entrada/salida al escribir en el archivo. Detalles: {io_error}")
-    except Exception as e:
-        print(f"Ocurrió un error inesperado: {e}")
+def get_article(url):
+    max_attempts = 15
+    data = {"url": url}
+    header_obtained = False
+    highlights_obtained = False
+    content_obtained = False
+    location_obtained = False
+    description_obtained = False
+    attempt = 0
+    while attempt < max_attempts:
+        try:
+            print(f"Intento {attempt + 1} de obtener el artículo.")
+            headers = {'User-Agent': choice(user_agents)}
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
+            article = soup.find(id="root-app")
+            if not article:
+                raise ValueError("El artículo base no fue encontrado en el DOM.")
+            if not header_obtained:
+                header = article.find("div", class_="ui-pdp-container__row ui-pdp-component-list")
+                if header:
+                    header_content=process_header(header)
+                    header_obtained = True
+                else:
+                    print(f"process_header not found: {headers}")
+            if not highlights_obtained:
+                highlights=article.find("div", id="highlighted_specs_res")
+                if highlights:
+                    highlights_content=process_highlights(highlights)
+                    highlights_obtained=True
+                else:
+                    print(f"process_highlights not found: {highlights}")    
+
+            if not content_obtained:
+                content = article.find_all("tbody", class_="andes-table__body")
+                if content:
+                    article_content=process_content(content)
+                    content_obtained = True
+                else:
+                    print(f"process_content not found: {headers}")
+            if not location_obtained:
+                location = article.find("div", id="location")
+                if location:
+                    location_content=process_location(location)
+                    location_obtained = True
+                else:
+                    print(f"location_content not found: {headers}")
+            if not description_obtained:
+                description = article.find("div", id="description")
+                if description:
+                    description_content=process_description(description)
+                    description_obtained = True
+                else:
+                    print(f"description_content not found: {headers}")
+            if header_obtained and highlights_obtained and content_obtained and location_obtained and description_obtained:
+                return  {"url": url, **header_content,**highlights_content, **article_content, **location_content, **description_content,"user_agent":headers,"intento":attempt }
+
+            attempt += 1
+            sleep(3)
+
+        except (requests.RequestException, ValueError) as e:
+            print(f"Error: {e}. Reintentando...")
+            attempt += 1
+            sleep(7)
+            continue
+
+    print("No se pudo obtener la información después de varios intentos.")
+    return None

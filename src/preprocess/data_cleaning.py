@@ -79,7 +79,7 @@ def update_antiguedad(row):
         return current_year - value
     return value
 
-def process_df(df):
+def rename(df):
     df=df.copy()
     df = df.rename(columns=name_mapping)
     df=df [[

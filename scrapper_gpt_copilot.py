@@ -9,7 +9,6 @@ Original file is located at
 
 import requests
 import csv
-
 from pathlib import Path
 from bs4 import BeautifulSoup
 from datetime import datetime

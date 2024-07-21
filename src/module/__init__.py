@@ -1,3 +1,4 @@
-from .module1 import get_urls_to_scrape,append_scraped_urls
-from .module3 import get_article,get_local_path,save_csv
-from param import fieldnames
+from .module1 import request_url,get_urls,get_urls_to_scrape,get_article
+from .CSV_Data import *
+from .data_extraction import *
+from param import *
