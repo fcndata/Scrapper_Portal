@@ -22,7 +22,6 @@ def get_scraped_urls(): #CSV Data.
             print(f"Error al crear el archivo: {e}")
     return scraped_urls
 
-
 def get_local_path(processed_article): # CSV Data.
     base_path = raw_data_path
     pub_date = datetime.fromisoformat(processed_article["Fecha_Publicacion"])

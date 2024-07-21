@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from time import time,sleep,datetime
+from time import time,sleep
 from random import choice
 from param import new_url_path,user_agents
 from data import collect_scraped_urls
