@@ -4,7 +4,7 @@ from data.param_db import raw_col, process_col, db_file_path
 
 def create_db():
     # Crear la declaración SQL para la creación de las tablas
-    create_raw_table = f"CREATE TABLE IF NOT EXISTS raw ({', '.join([f'{col} {dtype}' for col, dtype in raw_col.items()])})"
+    create_raw_table = f"""CREATE TABLE IF NOT EXISTS raw ({', '.join([f"{col.replace(' ', '_')} {dtype}" for col, dtype in raw_col.items()])})"""
     create_processed_table = f"CREATE TABLE IF NOT EXISTS processed ({', '.join([f'{col} {dtype}' for col, dtype in process_col.items()])})"
     create_urls_scraped = "CREATE TABLE IF NOT EXISTS url (url TEXT)"
 
