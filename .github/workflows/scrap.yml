@@ -25,15 +25,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set PYTHONPATH
-        run: |
-          echo "PYTHONPATH=${GITHUB_WORKSPACE}/src:${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE}/data" >> $GITHUB_ENV
-  
-      - name: Execute script 
-        run: |
-          python src/scrap.py
-          python src/preprocess.py
+      - name: Execute scrap.py script 
+        env:
+          PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}:${{ github.workspace }}/data
+        run: python src/scrap.py
 
+      - name: Execute preprocess.py script
+        env:
+          PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}:${{ github.workspace }}/data
+        run: python src/preprocess.py
+        
       - name: Commit changes
         run: |
           git config --global user.email "facu_mt@hotmail.com"
