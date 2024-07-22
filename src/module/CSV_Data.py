@@ -1,5 +1,4 @@
 import csv
-
 from datetime import datetime
 from .module1 import get_urls
 from param import raw_data_path,scrapped_url_path

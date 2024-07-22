@@ -36,7 +36,7 @@ housing_types={'Departamento':['departamento','habitacional','completo'],
 }
 
 rating_columns = [
-    'General Expenses', 'Size of the flat', 'Bedrooms', 'Bathrooms', 'Seller',
+    'General_Expenses', 'Size_of_the_flat', 'Bedrooms', 'Bathrooms', 'Seller',
     'metraje', 'sup_terraza', 'sup_util', 'ambientes', 'dormitorios', 'banos',
     'estacionamiento', 'bodegas', 'piso_unidad', 'cant_pisos', 'dept_piso',
     'antiguedad', 'tipo_depa', 'orientacion'
@@ -45,10 +45,10 @@ rating_columns = [
 
 name_mapping={
 'url':'url', 
-'Name of the flat':'id_name', 
+'Name_of_the_flat':'id_name', 
 'Value':'valor', 'Currency':'moneda', 
-'General Expenses':'gastos_comunes',
-'Size of the flat':'metraje',
+'General_Expenses':'gastos_comunes',
+'Size_of_the_flat':'metraje',
 'Bedrooms':'habitacion', 
 'Bathrooms':'bano', 
 'Seller':'vendedor', 
@@ -73,6 +73,5 @@ name_mapping={
 'Dirección':'direccion', 
 'Fecha_Publicacion':'fecha_scrap', 
 'Description':'descripcion',
-'flat_id':'id_publicacion', 
 'quality_rate':'quality_scrap'
 }

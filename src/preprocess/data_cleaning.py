@@ -37,8 +37,8 @@ def update_missing_pairs(df):
     df['Bathrooms'] = df['Bathrooms'].fillna(df['banos'])
     df['banos'] = df['banos'].fillna(df['Bathrooms'])
     
-    df['Size of the flat'] = df['Size of the flat'].fillna(df['metraje'])
-    df['metraje'] = df['metraje'].fillna(df['Size of the flat'])    
+    df['Size_of_the_flat'] = df['Size_of_the_flat'].fillna(df['metraje'])
+    df['metraje'] = df['metraje'].fillna(df['Size_of_the_flat'])    
     return df
 
 def update_surface_areas(df):
@@ -109,7 +109,6 @@ def rename(df):
     'ciudad', 
     'direccion', 
     'fecha_scrap', 
-    'descripcion',
-    'id_publicacion', 
+    'descripcion', 
     'quality_scrap']]
     return df
