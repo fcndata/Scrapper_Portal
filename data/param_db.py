@@ -67,3 +67,35 @@ process_col = {
     "quality_scrap": "REAL"
 }
 
+raw_col_sql = {
+    "url": "TEXT",
+    "Name_of_the_flat": "TEXT",
+    "Value": "INTEGER",
+    "Currency": "TEXT",
+    "General_Expenses": "REAL",
+    "Size_of_the_flat": "REAL",
+    "Bedrooms": "REAL",
+    "Bathrooms": "REAL",
+    "Seller": "TEXT",
+    "metraje": "REAL",
+    "sup_terraza": "REAL",
+    "sup_util": "REAL",
+    "ambientes": "REAL",
+    "dormitorios": "REAL",
+    "banos": "REAL",
+    "estacionamiento": "REAL",
+    "bodegas": "REAL",
+    "piso_unidad": "REAL",
+    "cant_pisos": "REAL",
+    "dept_piso": "REAL",
+    "antiguedad": "REAL",
+    "tipo_depa": "TEXT",
+    "orientacion": "TEXT",
+    "Calle": "TEXT",
+    "Barrio": "TEXT",
+    "Comuna": "TEXT",
+    "Ciudad": "TEXT",
+    "Dirección": "TEXT",
+    "Fecha_Publicacion": "TEXT",
+    "Description": "TEXT"
+}
