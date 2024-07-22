@@ -4,7 +4,7 @@ from time import time, sleep
 from random import choice
 from param import new_url_path, user_agents
 from data import collect_urls_db
-from data_extraction import process_header,process_content,process_description,process_highlights,process_location
+from .data_extraction import process_header,process_content,process_description,process_highlights,process_location
 
 def request_url(url: str):
     response = requests.get(url, timeout=10)
