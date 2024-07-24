@@ -3,6 +3,6 @@ requests==2.26.0
 beautifulsoup4==4.10.0
 pandas==1.4.2
 pytz==2022.1
-google-api-python-client==1.7.9
-google-auth-httplib2==0.0.3
-google-auth-oauthlib==0.4.0
+fastapi==0.111.1
+SQLAlchemy==2.0.31
+
