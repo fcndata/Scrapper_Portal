@@ -1,6 +1,6 @@
 import sqlite3
 import pandas as pd
-from data.param_db import raw_col,raw_col_sql,process_col, db_file_path
+from .param_db import raw_col,raw_col_sql,process_col, db_file_path
 
 def create_db():
     # Crear la declaración SQL para la creación de las tablas
