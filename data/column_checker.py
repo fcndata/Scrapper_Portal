@@ -6,7 +6,7 @@ def check_table_columns():
     cursor = conn.cursor()
     
     # Consulta para obtener información de las columnas de la tabla 
-    cursor.execute("PRAGMA table_info(raw)")
+    cursor.execute("PRAGMA table_info(processed)")
     columns = cursor.fetchall()
     
     conn.close()

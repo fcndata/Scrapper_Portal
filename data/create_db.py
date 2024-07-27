@@ -1,12 +1,13 @@
 import sqlite3
 import pandas as pd
-from .param_db import raw_col,raw_col_sql,process_col, db_file_path
+from data.param_db import raw_col,raw_col_sql,process_col, db_file_path
 
 def create_db():
     # Crear la declaración SQL para la creación de las tablas
     create_raw_table = f"CREATE TABLE IF NOT EXISTS raw ({', '.join([f'{col} {dtype}' for col, dtype in raw_col_sql.items()])})"
     create_processed_table = f"CREATE TABLE IF NOT EXISTS processed ({', '.join([f'{col} {dtype}' for col, dtype in process_col.items()])})"
     create_urls_scraped = "CREATE TABLE IF NOT EXISTS url (url TEXT)"
+    create_trained_table = f"CREATE TABLE IF NOT EXISTS trained ({', '.join([f'{col} {dtype}' for col, dtype in process_col.items()])}, gusto INTEGER)"
 
     # Conectar a la base de datos SQLite (o crearla)
     conn = sqlite3.connect(db_file_path)
@@ -16,6 +17,7 @@ def create_db():
     cursor.execute(create_raw_table)
     cursor.execute(create_processed_table)
     cursor.execute(create_urls_scraped)
+    cursor.execute(create_trained_table)
     # Confirmar cambios y cerrar la conexión
     conn.commit()
     conn.close()
@@ -47,14 +49,35 @@ def collect_raw_db():
 def fill_process_db(data):
     conn = sqlite3.connect(db_file_path)
     if isinstance(data, pd.DataFrame):
-    # Conectar a la base de datos SQLite
-        # Reemplazar espacios en los nombres de las columnas
         data.columns = [col.replace(' ', '_') for col in data.columns]
         # Insertar DataFrame en la tabla 'processed'
         data.to_sql('processed', conn, if_exists='append', index=False)
     # Cerrar la conexión
     conn.commit()
     conn.close()
+
+def collect_process_db():
+    conn = sqlite3.connect(db_file_path)
+    query = "SELECT * FROM processed"
+    df = pd.read_sql_query(query, conn)
+    conn.close()
+    return df
+
+def fill_trained_db(data):
+    conn = sqlite3.connect(db_file_path)
+    if isinstance(data, pd.DataFrame):
+        data.columns = [col.replace(' ', '_') for col in data.columns]
+        data.to_sql('trained', conn, if_exists='append', index=False)
+    # Cerrar la conexión
+    conn.commit()
+    conn.close()
+
+def collect_trained_db():
+    conn = sqlite3.connect(db_file_path)
+    query = "SELECT * FROM trained"
+    df = pd.read_sql_query(query, conn)
+    conn.close()
+    return df
 
 def collect_urls_db():
     conn = sqlite3.connect(db_file_path)
