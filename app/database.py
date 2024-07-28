@@ -18,6 +18,6 @@ Base = declarative_base()
 def get_db():
     db = SessionLocal()
     try:
-        yield db
+        yield db #En lugar de retornar db, yield se utiliza para "ceder" la sesión de base de datos al código que consume esta función. Esto convierte get_db() en un generador, que puede pausar su ejecución y reanudarla más tarde.
     finally:
         db.close()

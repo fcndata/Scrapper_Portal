@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Processed Items</title>
+</head>
+
+<body>
+    <header>
+        <h1>Processed Items</h1>
+    </header>
+    <div class="container">
+        {% for item in processed %}
+        <div class="item">
+            <h2>{{ item.name }}</h2>
+            <p>Valor: {{ item.valor }}</p>
+            <button class="gusto-button" data-id="{{ item.id_publicacion }}" data-gusto="1">Me gusta</button>
+            <button class="gusto-button" data-id="{{ item.id_publicacion }}" data-gusto="0">No me gusta</button>
+        </div>
+        {% endfor %}
+    </div>
+    <script src="/static/js/scripts.js"></script>
+</body>
+
+</html>

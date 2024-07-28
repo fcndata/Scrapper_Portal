@@ -28,5 +28,7 @@ sql_to_pydantics={
 "direccion": Optional[str],
 "fecha_scrap": Optional[str],
 "descripcion": Optional[str],
-"id_publicacion": Optional[str],
-"quality_scrap": Optional[float]}
+"id_publicacion": str,
+"quality_scrap": Optional[float],
+"gusto": int
+}

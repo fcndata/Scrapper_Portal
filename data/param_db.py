@@ -1,5 +1,6 @@
 import os
-# Definir la ruta base
+from sqlalchemy import Column, Integer, String, Float
+
 db_file_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'db.db')
 
 raw_col = {
@@ -99,3 +100,9 @@ raw_col_sql = {
     "Fecha_Publicacion": "TEXT",
     "Description": "TEXT"
 }
+
+col_type_mapping = {
+            "TEXT": String,
+            "INTEGER": Integer,
+            "REAL": Float
+        }
