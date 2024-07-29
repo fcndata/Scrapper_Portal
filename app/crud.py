@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.structure import Processed, Trained
-from app.schemas import  TrainedCreate
+from app.schemas import  TrainedSchema
 
 # Funciones CRUD para la tabla "processed"
 def get_processed(db: Session, skip: int = 0, limit: int = 100):
@@ -10,7 +10,7 @@ def get_processed(db: Session, skip: int = 0, limit: int = 100):
         raise Exception(f"Database error: {e}")
 
 # Crear un nuevo registro en la tabla "trained"
-def create_trained(db: Session, trained: TrainedCreate):
+def create_trained(db: Session, trained: TrainedSchema):
     if not trained.id_publicacion:
         raise ValueError("id_publicacion is required")
     db_trained = Trained(**trained.dict())
