@@ -1,28 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de la Propiedad</title>
     <link rel="stylesheet" href="/static/css/styles.css">
-    <title>Processed Items</title>
 </head>
 
 <body>
-    <header>
-        <h1>Processed Items</h1>
-    </header>
     <div class="container">
         {% for item in processed %}
-        <div class="item">
-            <h2>{{ item.name }}</h2>
-            <p>Valor: {{ item.valor }}</p>
-            <button class="gusto-button" data-id="{{ item.id_publicacion }}" data-gusto="1">Me gusta</button>
-            <button class="gusto-button" data-id="{{ item.id_publicacion }}" data-gusto="0">No me gusta</button>
+        <div class="property-details">
+            <div><strong>Descripción:</strong> {{ item.id_name }}</div>
+            <div><strong>URL:</strong> <a href="{{ item.url }}" target="_blank">URL</a></div>
+            <div><strong>Valor de la propiedad:</strong> {{ item.valor }}</div>
+            <div><strong>Gastos:</strong> {{ item.gastos_comunes }}</div>
+            <div><strong>Superficie:</strong> {{ item.sup_total }}</div>
+            <div><strong>Terraza:</strong> {{ item.sup_terraza }}</div>
+            <div><strong>Dormitorio:</strong> {{ item.sup_dormitorio }}</div>
+            <div><strong>Baños:</strong> {{ item.banos }}</div>
+            <div><strong>Orientación:</strong> {{ item.orientacion }}</div>
+        </div>
+        <div class="actions">
+            <form action="/label" method="post">
+                <input type="hidden" name="item_id" value="{{ item.id_name }}">
+                <label for="gusto">gusto</label>
+                <button type="submit" name="gusto" value="1">Me gusta</button>
+                <button type="submit" name="gusto" value="0">No me gusta</button>
+            </form>
         </div>
         {% endfor %}
     </div>
-    <script src="/static/js/scripts.js"></script>
 </body>
 
 </html>

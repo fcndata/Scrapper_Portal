@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from .database import Base
 from data.param_db import process_col, col_type_mapping
 
-primary_key = "id_publicacion"
+primary_key = "id_name"
 
 ProcessedSQL = type('Processed', (Base,), {
     '__tablename__': 'processed',
