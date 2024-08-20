@@ -6,7 +6,7 @@ def check_raw_data():
     cursor = conn.cursor()
     
     # Ejecutar la consulta para obtener los datos de la tabla 'raw'
-    cursor.execute("SELECT * FROM processed") #processed, raw,url
+    cursor.execute("SELECT count(*) FROM processed") #processed, raw,url
     rows = cursor.fetchall()
     
     conn.close()

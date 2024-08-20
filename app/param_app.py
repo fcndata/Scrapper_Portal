@@ -2,8 +2,6 @@ from typing import Optional
 from pydantic import Field
 from typing_extensions import Annotated
 
-# param_app.py
-from typing import Optional
 
 sql_to_pydantics = {
     "url": Optional[str],
